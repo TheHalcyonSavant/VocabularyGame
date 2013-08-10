@@ -132,9 +132,17 @@ sounds/
 *.lnk
 
 !VocabularyGame/bin/
-VocabularyGame/bin/*
+
 !VocabularyGame/bin/Release/
 VocabularyGame/bin/Release/*
 !VocabularyGame/bin/Release/en-US/
 VocabularyGame/bin/Release/en-US/*
 !VocabularyGame/bin/Release/en-US/LocBaml.exe
+!VocabularyGame/bin/Release/mk-MK/
+
+!VocabularyGame/bin/Debug/
+VocabularyGame/bin/Debug/*
+!VocabularyGame/bin/Debug/en-US/
+VocabularyGame/bin/Debug/en-US/*
+!VocabularyGame/bin/Debug/en-US/LocBaml.exe
+!VocabularyGame/bin/Debug/mk-MK/
