@@ -15,6 +15,18 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
+        "OwnerKey" = "8:_60C5D38CA4A74AEFBB451D9E7CEB23AA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2A01C0A43DCA7C911CAE57F5564D5511"
+        "OwnerKey" = "8:_5CAD00C5E910F0CD8EBE2F8F4CF61292"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_35227A9A030745318A4ED804D0FF8A68"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -23,6 +35,18 @@
         {
         "MsmKey" = "8:_37DCA4A3DEA74451B168E04B0EF5575B"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_43B20F94B879842CA7CCA72040CB9E85"
+        "OwnerKey" = "8:_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5CAD00C5E910F0CD8EBE2F8F4CF61292"
+        "OwnerKey" = "8:_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -47,6 +71,24 @@
         {
         "MsmKey" = "8:_8C1327B5B2164B518BB660A184052530"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8CD0CCABEDF18BDB007CEB0B7837D63F"
+        "OwnerKey" = "8:_2A01C0A43DCA7C911CAE57F5564D5511"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8CD0CCABEDF18BDB007CEB0B7837D63F"
+        "OwnerKey" = "8:_5CAD00C5E910F0CD8EBE2F8F4CF61292"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ABD98A8D8137A9D6AB1B708B301A580D"
+        "OwnerKey" = "8:_8CD0CCABEDF18BDB007CEB0B7837D63F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -76,7 +118,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_60C5D38CA4A74AEFBB451D9E7CEB23AA"
+        "OwnerKey" = "8:_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_43B20F94B879842CA7CCA72040CB9E85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5CAD00C5E910F0CD8EBE2F8F4CF61292"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2A01C0A43DCA7C911CAE57F5564D5511"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8CD0CCABEDF18BDB007CEB0B7837D63F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_ABD98A8D8137A9D6AB1B708B301A580D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -179,7 +251,7 @@
             "Sequence" = "3:1"
             "Identifier" = "8:_7AAB91B8_9AD1_4CB5_A0D0_38F21D0EA742"
             "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
+            "CustomActionData" = "8:/TDIR=\"[TARGETDIR]\\\""
             }
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_A768AC1B9814490AA816A7E5FBCCFA25"
             {
@@ -246,6 +318,68 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ExcelApp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
+                    {
+                    "Name" = "8:ExcelApp.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ExcelApp.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2FFAC1C84DA740CDBB3F8E87707D49F9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2A01C0A43DCA7C911CAE57F5564D5511"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Vbe.Interop, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2A01C0A43DCA7C911CAE57F5564D5511"
+                    {
+                    "Name" = "8:Microsoft.Vbe.Interop.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Vbe.Interop.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2FFAC1C84DA740CDBB3F8E87707D49F9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_35227A9A030745318A4ED804D0FF8A68"
             {
             "SourcePath" = "8:..\\VocabularyGame\\bin\\Release\\VocabularyGame.exe.config"
@@ -284,6 +418,68 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_43B20F94B879842CA7CCA72040CB9E85"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:TRUE"
+            "AssemblyAsmDisplayName" = "8:FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_43B20F94B879842CA7CCA72040CB9E85"
+                    {
+                    "Name" = "8:FSharp.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:FSharp.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2FFAC1C84DA740CDBB3F8E87707D49F9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5CAD00C5E910F0CD8EBE2F8F4CF61292"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5CAD00C5E910F0CD8EBE2F8F4CF61292"
+                    {
+                    "Name" = "8:Microsoft.Office.Interop.Excel.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Office.Interop.Excel.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2FFAC1C84DA740CDBB3F8E87707D49F9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5F56D7AD818C444BBDBD695724909182"
@@ -386,6 +582,68 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8CD0CCABEDF18BDB007CEB0B7837D63F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_8CD0CCABEDF18BDB007CEB0B7837D63F"
+                    {
+                    "Name" = "8:office.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:office.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2FFAC1C84DA740CDBB3F8E87707D49F9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_ABD98A8D8137A9D6AB1B708B301A580D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:TRUE"
+            "AssemblyAsmDisplayName" = "8:stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                "ScatterAssemblies"
+                {
+                    "_ABD98A8D8137A9D6AB1B708B301A580D"
+                    {
+                    "Name" = "8:stdole.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:stdole.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_2FFAC1C84DA740CDBB3F8E87707D49F9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C7CD57FC43AF481FAA93C5C91C275DA0"
@@ -551,7 +809,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VocabularyGame"
         "ProductCode" = "8:{97F7B1E8-DF4B-415C-8000-224A5E6ED280}"
-        "PackageCode" = "8:{A9A3BAB9-CE2A-4116-B2FF-112E2A253773}"
+        "PackageCode" = "8:{7A1A3D5B-BF0F-4DE3-B9A0-C9678E616D37}"
         "UpgradeCode" = "8:{FB3B1F00-E17B-402B-8B2D-68E58CA854E0}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

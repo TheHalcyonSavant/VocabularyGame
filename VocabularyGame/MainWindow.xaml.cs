@@ -408,6 +408,8 @@ namespace VocabularyGame
             if (File.Exists(repeatsFn))
                 using (FileStream fs = new FileStream(repeatsFn, FileMode.Open))
                     _dictRepeats = binFormatter.Deserialize(fs) as Dictionary<string, byte>;
+
+            _wRecords.deserializeOC("dat/" + xlsmSafeFileNameNoExt + _s.RecordsSuffix);
         }
 
         private void Worker_StartupComplete(object sender, RunWorkerCompletedEventArgs e)

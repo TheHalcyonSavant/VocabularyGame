@@ -27,10 +27,6 @@ namespace VocabularyGame
 
         private void Window_Activated(object sender, System.EventArgs e)
         {
-            _recordsFn = "dat/" + _mainWindow.xlsmSafeFileNameNoExt + _s.RecordsSuffix;
-            if (File.Exists(_recordsFn))
-                using (FileStream fs = new FileStream(_recordsFn, FileMode.Open))
-                    ocRecordsList = _mainWindow.binFormatter.Deserialize(fs) as ObservableCollection<Record>;
             dataGrid.ItemsSource = ocRecordsList;
             if (!isSaving) return;
             gridNewRecord.Visibility = Visibility.Visible;
@@ -41,6 +37,7 @@ namespace VocabularyGame
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Hide();
+            isSaving = false;
             e.Cancel = true;
         }
 
@@ -59,5 +56,12 @@ namespace VocabularyGame
             Close();
         }
 
+        public void deserializeOC(string fileName)
+        {
+            _recordsFn = fileName;
+            if (File.Exists(_recordsFn))
+                using (FileStream fs = new FileStream(_recordsFn, FileMode.Open))
+                    ocRecordsList = _mainWindow.binFormatter.Deserialize(fs) as ObservableCollection<Record>;
+        }
     }
 }
