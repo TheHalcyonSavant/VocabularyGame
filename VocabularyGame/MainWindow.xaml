@@ -80,7 +80,7 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <StackPanel Height="45">
+        <StackPanel Height="50">
             <Label Foreground="DodgerBlue" Name="lblCorrect" Style="{StaticResource bottomLabels}" />
             <Label Foreground="Red" Name="lblWrong" Style="{StaticResource bottomLabels}" />
         </StackPanel>
