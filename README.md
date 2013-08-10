@@ -1,6 +1,7 @@
 VocabularyGame - Better your elocution
 -----------------------------------------------------
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a very simple test game that accumulates points based on your correctly guessed choices. The question is on the top of the window and you must choose only one from five random choices to proceed to the next question.<br />Testing is the best approach to gain any knowledge and with this game it can't be easier.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a very simple test game that accumulates points based on your correctly guessed choices. The question is on the top of the window and you must choose only one from five random choices to proceed to the next question.  
+Testing is the best approach to gain any knowledge and with this game it can't be easier.
 
 ####Installation
 1. Download [dictionary.xlsm](dictionary.xlsm?raw=true) to some permanent location on your disk (like My Documents)
@@ -13,16 +14,16 @@ VocabularyGame - Better your elocution
  
 When you click the sound icon (next to the question) you can hear and learn how to pronounce the phrase. These sounds are downloaded into the *sounds/* folder.
  
-When you gain **30 points** for the first time, then you've made the first record. To break it again you must pass the best record made so far. To see all records go to *File -> Records*. The records are stored inside *dat/{dictionaryWithNoExt}_records.dat* file (i.e *dat/dictionary_records.dat*) and saved upon leaving the application.
+When you gain **30 points** for the first time, then you've made the first record. To break it again you must pass the best record made so far. To see all records go to *File -> Records*. The records are stored inside *dat/{dictionaryWithNoExt}_records.dat* file (e.g. *dat/dictionary_records.dat*) and saved upon leaving the application.
 
 ####dictionary.xlsm
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you open the application for the first, an open dialog pops out and asks you to locate *dictionary.xlsm*. This is a Macro-Enabled Excel file that contains all the unique entries, important for this game to choose from. You must have installed **Microsoft Office 2007** or newer version to edit this file.  
 This excel file contains 4 columns:  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **A** : **English** - this is the key column. The question is randomly generated from this column. Contains single word (i.e. *affix*), phrases (i.e. *bundle up*), also words with additional explanation in parenthesis like *maiden (adjective)*;  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **A** : **English** - this is the key column. The question is randomly generated from this column. Contains single word (e.g. *affix*), phrases (e.g. *bundle up*), also words with additional explanation in parenthesis like *maiden (adjective)*;  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **B** : **Lexicon** - a meaningful explanations on English;  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **C** : **Synonyms** - words with the same or similar meanings;  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **D** : **Macedonian** - direct translation.  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Columns **B**, **C** and **D** can have more then one meaning separated by semicolon and new line (i.e. see *calf*). Also, those columns can be empty if a translation or explanation is not necessary. The 5 random answers are generated from these 3 columns. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Columns **B**, **C** and **D** can have more then one meaning separated by semicolon and new line (e.g. see *calf*). Also, those columns can be empty if a translation or explanation is not necessary. The 5 random answers are generated from these 3 columns. 
 
 ####Settings
 ######Answer Types
