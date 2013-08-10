@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="dictGeneration" x:Uid="dictGeneration">Generating dictionary from '{0}' ...</sys:String>
+    <sys:String x:Key="lblCorrect" x:Uid="lblCorrect">Correct</sys:String>
+    <sys:String x:Key="lblCorrectBeforeRecord" x:Uid="lblCorrectBeforeRecord">Correct ({0} points left to break record)</sys:String>
+    <sys:String x:Key="lblTimeUp" x:Uid="lblTimeUp">Time is up</sys:String>
+    <sys:String x:Key="lblWrong" x:Uid="lblWrong">Wrong</sys:String>
+    <sys:String x:Key="loadingRepetitions" x:Uid="loadingRepetitions">Loading repetitions from '{0}' ...</sys:String>
+    <sys:String x:Key="msgErrorOdict" x:Uid="msgErrorOdict">The file '{0}' must have at least 5 rows to start the game</sys:String>
+    <sys:String x:Key="msgMaster" x:Uid="msgMaster">
+        You are a master of this game - you've guessed everything !\n
+        If you don't want to see this message again\n
+        then change the guessed choices setting to higher maximum\n
+        or select more answer types\n
+        or simply delete '{0}' from the main directory and restart the game
+    </sys:String>
+    <sys:String x:Key="msgNeedRestart" x:Uid="msgNeedRestart">Restart the program to see the changes</sys:String>
+</ResourceDictionary>

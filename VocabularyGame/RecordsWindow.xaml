@@ -1,0 +1,24 @@
+﻿<Window x:Class="VocabularyGame.RecordsWindow"
+        x:Uid="recordsWindowTitle"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Activated="Window_Activated" Closing="Window_Closing" Height="430" Title="Records" Width="300" WindowStartupLocation="CenterOwner">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Height="50" Name="gridNewRecord" Visibility="Collapsed">
+            <TextBox Height="23" HorizontalAlignment="Left" Margin="5,0,0,0" Name="txtName" VerticalAlignment="Center" Width="140" />
+            <Label Height="30" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="159,0,79,0" Name="lblRecordPoints"
+                   VerticalAlignment="Center" VerticalContentAlignment="Center" Width="40" />
+            <Button Click="btnInsert_Click" Content="Insert" Height="23" HorizontalAlignment="Right" IsDefault="True" Margin="0,0,5,0"
+                    VerticalAlignment="Center" Width="60" x:Uid="btnInsert" />
+        </Grid>
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
+                  CanUserResizeRows="False" DockPanel.Dock="Top" ItemsSource="{Binding propertyList}" IsReadOnly="True"
+                  Name="dataGrid" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Name}" Header="Name" Width="80" x:Uid="dgtcName" />
+                <DataGridTextColumn Binding="{Binding Path=Time}" Header="Time" Width="140" x:Uid="dgtcTime" />
+                <DataGridTextColumn Binding="{Binding Path=Score}" Header="Score" Width="*" x:Uid="dgtcScore" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

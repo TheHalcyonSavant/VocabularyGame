@@ -1,0 +1,88 @@
+﻿<Window x:Class="VocabularyGame.MainWindow"
+        x:Uid="mainWindowTitle"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:my="clr-namespace:VocabularyGame"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        Closing="Window_Closing" Icon="/VocabularyGame;component/images/Book.ico"
+        Loaded="Window_Loaded" SizeToContent="WidthAndHeight" Title="Vocabulary Game" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Label" x:Key="bottomLabels">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Visibility" Value="Hidden" />
+        </Style>
+        <Style TargetType="Label" x:Key="rightLabels">
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Content" Value="0" />
+            <Setter Property="FontFamily" Value="Global Serif" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Width" Value="60" />
+        </Style>
+    </Window.Resources>
+    <StackPanel Background="WhiteSmoke" Name="stackMain">
+        <Menu Background="Gainsboro" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <MenuItem Header="_File" x:Uid="miFile">
+                <MenuItem Click="miLoadXlsm_Click" Header="_Load Dictionary File (*.xlsm)" x:Uid="miLoadXlsm" />
+                <MenuItem Click="miOpenXlsm_Click" Header="_Open Excel File" x:Uid="miOpenXlsm" />
+                <MenuItem Click="miRecords_Click" Header="_Records" x:Uid="miRecords" />
+                <MenuItem Click="miExit_Click" Header="E_xit" x:Uid="miExit" />
+            </MenuItem>
+            <MenuItem Header="_Settings" Name="miSettings" x:Uid="miSettings">
+                <MenuItem Header="_Answer Types" Name="miAnswerTypes" x:Uid="miAnswerTypes">
+                    <MenuItem Header="_Lexicon" Name="miLexicon" Tag="0" x:Uid="miLexicon" />
+                    <MenuItem Header="_Synonyms" Name="miSynonyms" Tag="1" x:Uid="miSynonyms" />
+                    <MenuItem Header="_Macedonian" Name="miMacedonian" Tag="2" x:Uid="miMacedonian" />
+                </MenuItem>
+                <MenuItem Click="miAutoPronounce_Click" Header="Auto-_Pronounce question"
+                          IsCheckable="True" Name="miAutoPronounce" x:Uid="miAutoPronounce" />
+                <MenuItem Click="miCountdown_Click" Header="Countdown _Timer" IsCheckable="True" Name="miCountdown"
+                          ToolTip="Countdown timer will be available from the next question" x:Uid="miCountdown" />
+                <MenuItem Header="_Don't show me choices I guessed more then" Name="miRepeatingLimit" x:Uid="miRepeatingLimit">
+                    <RadioButton Content="_1 time" Tag="1" x:Uid="mirbRepeatLimit1" />
+                    <RadioButton Content="_3 times" Tag="3" x:Uid="mirbRepeatLimit3" />
+                    <RadioButton Content="_5 times" Tag="5" x:Uid="mirbRepeatLimit5" />
+                    <RadioButton Content="_No repeating limit" Tag="101" x:Uid="mirbRepeatNoLimit" />
+                </MenuItem>
+                <MenuItem Header="_Language" Name="miLanguage" x:Uid="miLanguage">
+                    <RadioButton Content="_English" IsChecked="True" Name="mirbEnglish" Tag="en-US" x:Uid="mirbEnglish" />
+                    <RadioButton Content="_Macedonian" Name="mirbMacedonian" Tag="mk-MK" x:Uid="mirbMacedonian" />
+                </MenuItem>
+                <MenuItem Click="miResetSettings_Click" Header="_Reset All Settings" x:Uid="miResetSettings" />
+            </MenuItem>
+        </Menu>
+        <Grid Margin="0,20,0,0">
+            <MediaElement LoadedBehavior="Manual" MediaEnded="media_MediaEnded" Name="media" UnloadedBehavior="Manual" />
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label BorderBrush="#FF62966F" BorderThickness="0,0,0,1" FontSize="22" FontStyle="Italic" FontWeight="ExtraBold"
+                       Foreground="#FF62966F" Height="40" HorizontalContentAlignment="Center" Name="lblQuestion" MinWidth="300" />
+                <my:GifImage Cursor="Hand" Height="26" Margin="10,0,0,0" Stretch="Fill" Width="26" x:Name="gifImage" />
+            </StackPanel>
+        </Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="10" MinHeight="320" Name="spRbs" MinWidth="800" />
+            <StackPanel VerticalAlignment="Center">
+                <StackPanel Margin="10">
+                    <Label Content="Points:" x:Uid="lblPoints" />
+                    <Label Name="lblPoints" Style="{StaticResource rightLabels}" />
+                </StackPanel>
+                <StackPanel Margin="10" Name="spCountdown" Visibility="Hidden">
+                    <Label Content="Time:" x:Uid="lblCountdown" />
+                    <Label Name="lblCountdown" Style="{StaticResource rightLabels}" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Height="45">
+            <Label Foreground="DodgerBlue" Name="lblCorrect" Style="{StaticResource bottomLabels}" />
+            <Label Foreground="Red" Name="lblWrong" Style="{StaticResource bottomLabels}" />
+        </StackPanel>
+    </StackPanel>
+</Window>
