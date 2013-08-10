@@ -19,9 +19,9 @@ When you gain **30 points** for the first time, then you've made the first recor
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you open the application for the first, an open dialog pops out and asks you to locate *dictionary.xlsm*. This is a Macro-Enabled Excel file that contains all the unique entries, important for this game to choose from. You must have installed **Microsoft Office 2007** or newer version to edit this file.  
 This excel file contains 4 columns:  
 &nbsp;&nbsp;&nbsp;&nbsp; **A** : **English** - this is the key column. The question is randomly generated from this column. Contains single word (i.e. *affix*), phrases (i.e. *bundle up*), also words with additional explanation in parenthesis like *maiden (adjective)*;  
-&nbsp;&nbsp;&nbsp;&nbsp; **B** : **Lexicon** - a meaningful explanations on English;  
-&nbsp;&nbsp;&nbsp;&nbsp; **C** : **Synonyms** - words with the same or similar meanings;  
-&nbsp;&nbsp;&nbsp;&nbsp; **D** : **Macedonian** - direct translation.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **B** : **Lexicon** - a meaningful explanations on English;  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **C** : **Synonyms** - words with the same or similar meanings;  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **D** : **Macedonian** - direct translation.  
 Columns **B**, **C** and **D** can have more then one meaning separated by semicolon and new line (i.e. see *calf*). Also, those columns can be empty if a translation or explanation is not necessary. The 5 random answers are generated from these 3 columns. 
 
 ####Settings
@@ -30,3 +30,10 @@ Columns **B**, **C** and **D** can have more then one meaning separated by semic
 ######Don't show me choices I guessed more then
 ######Language
 ######Reset All Settings
+
+Thanx to
+------------
+[Pavel Chuchuva](http://stackoverflow.com/a/1134340) for GifImage.cs  
+[Google Dictionary](http://en.wikipedia.org/wiki/Google_Dictionary) for making this game "sounds" better
+######Other repositories:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use [ExcelApp]() library if you want to compile this code successfully
