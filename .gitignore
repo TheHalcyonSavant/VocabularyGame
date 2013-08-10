@@ -1,7 +1,3 @@
-dat/
-sounds/
-*.lnk
-
 #################
 ## Visual Studio
 #################
@@ -129,3 +125,9 @@ UpgradeLog*.htm
 # SQL Server files
 App_Data/*.mdf
 App_Data/*.ldf
+
+#################
+dat/
+sounds/
+*.lnk
+!VocabularyGame/bin/Release/en-US/LocBaml.exe
