@@ -1,9 +1,9 @@
 VocabularyGame - Better your elocution
-===============================
+-----------------------------------------------------
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a very simple test game that accumulates points based on your correctly guessed choices. The question is on the top of the window and you must choose only one from five random choices to proceed to the next question.  
 Testing is the best approach to gain any knowledge and with this game it can't be easier.
 
-##Installation
+###Installation
 1. Download [dictionary.xlsm](dictionary.xlsm?raw=true) to some permanent location on your disk (like My Documents)
 2. Download [VocabularyGame.msi](/VocabularyGame.msi?raw=true), install and run VocabularyGame from your desktop
 3. When the open file dialog pops up, locate dictionary.xlsm
@@ -39,7 +39,7 @@ This setting limits the repetition of displayed question-answer pairs. For examp
 The repetitions history of these pairs are saved inside *dat/{dictionaryWithNoExt}_repeats.dat* file (e.g. *dat/dictionary_repeats.dat*).  
 This setting can be very handy if you want to filter very known words, but you want to avoid removing them from the excel file.
 
-####Language
+###Language
 User Interface localization language. Needs restart for this setting to take effect.
 
 ####Reset All Settings
