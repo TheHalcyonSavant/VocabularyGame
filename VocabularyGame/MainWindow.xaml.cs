@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -40,7 +39,6 @@ namespace VocabularyGame
         private DispatcherTimer _timerCountdown = new DispatcherTimer();
         private List<Uri> _lPlayWords = new List<Uri>();
         private LoadingWindow _wLoading;
-        private MD5CryptoServiceProvider _md5 = new MD5CryptoServiceProvider();
         private OrderedDictionary _odict = new OrderedDictionary();
         private RecordsWindow _wRecords;
         
@@ -171,8 +169,6 @@ namespace VocabularyGame
                 
                 TextBlock tb = new TextBlock();
                 tb.FontSize = 16;
-                tb.Height = rb.Height;
-                tb.Width = rb.Width - 5;
                 tb.TextWrapping = TextWrapping.Wrap;
 
                 rb.Content = tb;
@@ -404,7 +400,6 @@ namespace VocabularyGame
 
             string repeatsFn = "dat/" + xlsmSafeFileNameNoExt + _s.RepeatsSuffix;
             _bgWorker.ReportProgress(90, String.Format(t("loadingRepetitions"), repeatsFn));
-            _dictRepeats.Clear();
             if (File.Exists(repeatsFn))
                 using (FileStream fs = new FileStream(repeatsFn, FileMode.Open))
                     _dictRepeats = binFormatter.Deserialize(fs) as Dictionary<string, byte>;
@@ -461,12 +456,12 @@ namespace VocabularyGame
                 lblCorrect.Visibility = Visibility.Visible;
                 lblWrong.Visibility = Visibility.Hidden;
 
-                if (_dictRepeats.ContainsKey(tag.hash))
+                if (_dictRepeats.ContainsKey(tag.repeatsKey))
                 {
-                    _dictRepeats[tag.hash]++;
-                    if (_dictRepeats[tag.hash] > 100) _dictRepeats[tag.hash] = 100;
+                    _dictRepeats[tag.repeatsKey]++;
+                    if (_dictRepeats[tag.repeatsKey] > 100) _dictRepeats[tag.repeatsKey] = 100;
                 }
-                else _dictRepeats[tag.hash] = 1;
+                else _dictRepeats[tag.repeatsKey] = 1;
             }
             else
             {
@@ -486,10 +481,10 @@ namespace VocabularyGame
                 tb.Background = Brushes.LightSkyBlue;
                 tb.Foreground = Brushes.Black;
 
-                if (_dictRepeats.ContainsKey(tag.hash))
+                if (_dictRepeats.ContainsKey(tag.repeatsKey))
                 {
-                    _dictRepeats[tag.hash]--;
-                    if (_dictRepeats[tag.hash] < 0) _dictRepeats.Remove(tag.hash);
+                    _dictRepeats[tag.repeatsKey]--;
+                    if (_dictRepeats[tag.repeatsKey] < 0) _dictRepeats.Remove(tag.repeatsKey);
                 }
                 saveRecord();
             }
@@ -529,13 +524,10 @@ namespace VocabularyGame
                 tb = rb.Content as TextBlock;
                 answer = t.getRandomTranslation(tb, _answerTypes);
                 if (answer == "") continue;
-                byte[] bytes = _md5.ComputeHash(Encoding.UTF8.GetBytes(t.keyEnglish + "\0" + answer));
-                sbHash.Clear();
-                foreach (var b in bytes) sbHash.Append(b.ToString("x2"));
-                tag.hash = sbHash.ToString();
+                tag.repeatsKey = t.keyEnglish + "=" + answer;
                 tb.Tag = tag;
-                if (!_dictRepeats.ContainsKey(tag.hash)) break;
-                else if (_dictRepeats[tag.hash] < _repeatingLimit) break;
+                if (!_dictRepeats.ContainsKey(tag.repeatsKey)) break;
+                else if (_dictRepeats[tag.repeatsKey] < _repeatingLimit) break;
             } while (l++ < Translation.combinations);
             if (l == Translation.combinations)
             {
@@ -557,7 +549,7 @@ namespace VocabularyGame
                         isCorrectChoice = false,
                         correctODictIdx = tag.correctODictIdx,
                         correctRbIdx = tag.correctRbIdx,
-                        hash = tag.hash
+                        repeatsKey = tag.repeatsKey
                     };
                     int wrongIdx;
                     do

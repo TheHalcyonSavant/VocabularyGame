@@ -28,7 +28,7 @@ namespace VocabularyGame
         public bool isCorrectChoice;
         public int correctODictIdx;
         public int correctRbIdx;
-        public string hash;
+        public string repeatsKey;
     }
 
     public class Translation
