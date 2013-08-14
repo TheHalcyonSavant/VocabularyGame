@@ -197,6 +197,17 @@ namespace VocabularyGame
         private void miAnswerTypes_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mi = sender as MenuItem;
+            if (!mi.IsChecked)
+            {
+                bool isOk = false;
+                foreach (MenuItem otherMi in miAnswerTypes.Items)
+                    if (otherMi.IsChecked) isOk = true;
+                if (!isOk)
+                {
+                    mi.IsChecked = true;
+                    return;
+                }
+            }
             _s["AT" + mi.Name.Substring(2)] = _answerTypes[int.Parse(mi.Tag.ToString())] = mi.IsChecked;
         }
 
@@ -415,7 +426,7 @@ namespace VocabularyGame
             _bgWorker.RunWorkerCompleted += Worker_SoundComplete;
 
             _wLoading.Hide();
-            stackMain.Visibility = Visibility.Visible;
+            dockMain.Visibility = Visibility.Visible;
             Title = String.Format(_formattedTitle, _xlsmSafeFileName);
             askQuestion();
         }
@@ -502,34 +513,34 @@ namespace VocabularyGame
 
         private void askQuestion()
         {
-            long l = 0;
             string answer;
-            List<int> lIdxs = new List<int>();
             RadioButton rb;
             Random rnd = new Random();
             StringBuilder sbHash = new StringBuilder();
             TBTag tag = new TBTag();
             TextBlock tb;
-            
+            Translation trans;
+
             tag.correctRbIdx = rnd.Next(5);
-            do
+            Queue<int> qUniqueIdxs = new Queue<int>(Enumerable.Range(0, _odict.Count).OrderBy(x => rnd.Next()));
+            while (qUniqueIdxs.Count > 0)
             {
-                tag.correctODictIdx = rnd.Next(_odict.Count);
-                Translation t = _odict[tag.correctODictIdx] as Translation;
-                lblQuestion.Content = t.keyEnglish;
-                lIdxs.Clear();
-                lIdxs.Add(tag.correctODictIdx);
+                tag.correctODictIdx = qUniqueIdxs.Dequeue();
+                trans = _odict[tag.correctODictIdx] as Translation;
+                lblQuestion.Content = trans.keyEnglish;
                 tag.isCorrectChoice = true;
                 rb = spRbs.Children[tag.correctRbIdx] as RadioButton;
                 tb = rb.Content as TextBlock;
-                answer = t.getRandomTranslation(tb, _answerTypes);
-                if (answer == "") continue;
-                tag.repeatsKey = t.keyEnglish + "=" + answer;
-                tb.Tag = tag;
-                if (!_dictRepeats.ContainsKey(tag.repeatsKey)) break;
-                else if (_dictRepeats[tag.repeatsKey] < _repeatingLimit) break;
-            } while (l++ < Translation.combinations);
-            if (l == Translation.combinations)
+                answer = trans.getRandomTranslation(tb, _answerTypes);
+                if (answer != "")
+                {
+                    tag.repeatsKey = trans.keyEnglish + "=" + answer;
+                    tb.Tag = tag;
+                    if (!_dictRepeats.ContainsKey(tag.repeatsKey) || _dictRepeats[tag.repeatsKey] < _repeatingLimit)
+                        break;
+                }
+            }
+            if (qUniqueIdxs.Count < 5)
             {
                 MessageBox.Show(String.Format(t("msgMaster"), _s.RepeatsSuffix));
                 return;
@@ -551,13 +562,17 @@ namespace VocabularyGame
                         correctRbIdx = tag.correctRbIdx,
                         repeatsKey = tag.repeatsKey
                     };
-                    int wrongIdx;
-                    do
+
+                    if (qUniqueIdxs.Count < 5 - i)
                     {
-                        wrongIdx = rnd.Next(_odict.Count);
-                        answer = (_odict[wrongIdx] as Translation).getRandomTranslation(tb, _answerTypes);
-                    } while (lIdxs.Contains(wrongIdx) || answer == "");
-                    lIdxs.Add(wrongIdx);
+                        MessageBox.Show(String.Format(t("msgMaster"), _s.RepeatsSuffix));
+                        return;
+                    }
+                    while (qUniqueIdxs.Count > 0)
+                    {
+                        answer = (_odict[qUniqueIdxs.Dequeue()] as Translation).getRandomTranslation(tb, _answerTypes);
+                        if (answer != "") break;
+                    }
                     tb.Tag = tag;
                 }
             }
@@ -572,7 +587,7 @@ namespace VocabularyGame
             _xlsmSafeFileName = Path.GetFileName(_s.DictionaryPath);
             xlsmSafeFileNameNoExt = Path.GetFileNameWithoutExtension(_s.DictionaryPath);
             points = 0;
-            stackMain.Visibility = Visibility.Hidden;
+            dockMain.Visibility = Visibility.Hidden;
             _bgWorker.DoWork -= Worker_Sound;
             _bgWorker.RunWorkerCompleted -= Worker_SoundComplete;
             _bgWorker.DoWork += Worker_Startup;

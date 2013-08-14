@@ -45,8 +45,6 @@ namespace VocabularyGame
         public List<List<string>> llMacedonian;
         public List<List<string>> llSynonyms;
 
-        public static long combinations = 0;
-
         public Translation(Excel.App excel, int row, string english)
         {
             _excel = excel;
@@ -56,10 +54,7 @@ namespace VocabularyGame
             string[] subL = getCellStrings(LEXICON_COL);
             llLexicon = new List<string>();
             foreach (string defns in subL)
-            {
                 llLexicon.Add(defns.Replace("\n", ""));
-                combinations++;
-            }
 
             fillLL(MACEDONIAN_COL, ref llMacedonian);
             fillLL(SYNONYMS_COL, ref llSynonyms);
@@ -67,13 +62,12 @@ namespace VocabularyGame
 
         public string getRandomTranslation(TextBlock tb, bool[] answeTypes)
         {
-            int[] options = new int[] { 0, 1, 2 };
             List<string> subL;
             Random rnd = new Random();
 
             tb.ClearValue(TextBlock.FontStyleProperty);
             tb.ClearValue(TextBlock.FontWeightProperty);
-            options = options.OrderBy(x => rnd.Next()).ToArray();
+            int[] options = Enumerable.Range(0, 3).OrderBy(x => rnd.Next()).ToArray();
             for (int i = 0; i < options.Length; i++)
             {
                 switch (options[i])
@@ -108,10 +102,7 @@ namespace VocabularyGame
                 ll.Add(new List<string>());
                 subSubL = strSubL.Split(',');
                 foreach (string word in subSubL)
-                {
                     ll.Last().Add(word.Trim());
-                    combinations++;
-                }
             }
         }
 

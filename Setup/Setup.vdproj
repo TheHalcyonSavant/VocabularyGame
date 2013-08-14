@@ -809,7 +809,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VocabularyGame"
         "ProductCode" = "8:{97F7B1E8-DF4B-415C-8000-224A5E6ED280}"
-        "PackageCode" = "8:{7A1A3D5B-BF0F-4DE3-B9A0-C9678E616D37}"
+        "PackageCode" = "8:{BD04DCCA-42CE-4145-B346-2F9F6E3FDDDE}"
         "UpgradeCode" = "8:{FB3B1F00-E17B-402B-8B2D-68E58CA854E0}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1012,7 +1012,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_8B2CF8FC7B574E32878F0892B3047618"
                             "UsePlugInResources" = "11:TRUE"
                             }
                             "UpdateText"
@@ -1229,7 +1230,8 @@
                             "Type" = "3:8"
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
-                            "Setting" = "3:1"
+                            "Setting" = "3:2"
+                            "Value" = "8:_8B2CF8FC7B574E32878F0892B3047618"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }

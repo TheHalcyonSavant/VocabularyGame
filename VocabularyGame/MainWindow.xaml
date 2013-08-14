@@ -28,8 +28,8 @@
             <Setter Property="Width" Value="60" />
         </Style>
     </Window.Resources>
-    <StackPanel Background="WhiteSmoke" Name="stackMain">
-        <Menu Background="Gainsboro" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <DockPanel Background="WhiteSmoke" Name="dockMain">
+        <Menu Background="Gainsboro" DockPanel.Dock="Top" HorizontalAlignment="Left">
             <MenuItem Header="_File" x:Uid="miFile">
                 <MenuItem Click="miLoadXlsm_Click" Header="_Load Dictionary File (*.xlsm)" x:Uid="miLoadXlsm" />
                 <MenuItem Click="miOpenXlsm_Click" Header="_Open Excel File" x:Uid="miOpenXlsm" />
@@ -59,7 +59,7 @@
                 <MenuItem Click="miResetSettings_Click" Header="_Reset All Settings" x:Uid="miResetSettings" />
             </MenuItem>
         </Menu>
-        <Grid Margin="0,20,0,0">
+        <Grid DockPanel.Dock="Top" Margin="0,20,0,0">
             <MediaElement LoadedBehavior="Manual" MediaEnded="media_MediaEnded" Name="media" UnloadedBehavior="Manual" />
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Label BorderBrush="#FF62966F" BorderThickness="0,0,0,1" FontSize="22" FontStyle="Italic" FontWeight="ExtraBold"
@@ -67,9 +67,9 @@
                 <my:GifImage Cursor="Hand" Height="26" Margin="10,0,0,0" Stretch="Fill" Width="26" x:Name="gifImage" />
             </StackPanel>
         </Grid>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel Margin="10" MinHeight="320" Name="spRbs" MinWidth="800" />
-            <StackPanel VerticalAlignment="Center">
+        <DockPanel DockPanel.Dock="Top">
+            <StackPanel DockPanel.Dock="Left" Margin="10" MinHeight="320" Name="spRbs" MinWidth="700" />
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right">
                 <StackPanel Margin="10">
                     <Label Content="Points:" x:Uid="lblPoints" />
                     <Label Name="lblPoints" Style="{StaticResource rightLabels}" />
@@ -79,10 +79,10 @@
                     <Label Name="lblCountdown" Style="{StaticResource rightLabels}" />
                 </StackPanel>
             </StackPanel>
-        </StackPanel>
-        <StackPanel Height="50">
+        </DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Height="50" VerticalAlignment="Bottom">
             <Label Foreground="DodgerBlue" Name="lblCorrect" Style="{StaticResource bottomLabels}" />
             <Label Foreground="Red" Name="lblWrong" Style="{StaticResource bottomLabels}" />
         </StackPanel>
-    </StackPanel>
+    </DockPanel>
 </Window>
