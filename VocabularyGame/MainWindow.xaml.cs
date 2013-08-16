@@ -28,6 +28,8 @@ namespace VocabularyGame
         private static BitmapImage _biSound = new BitmapImage(new Uri("images/Sound.png", UriKind.Relative));
         private static Properties.Settings _s = Properties.Settings.Default;
 
+        private bool _isInitialized = false;
+        private bool _isInternetOk;
         private bool[] _answerTypes = new bool[3];
         private int _iPlayWords;
         private int _repeatingLimit;
@@ -53,51 +55,22 @@ namespace VocabularyGame
         public MainWindow()
         {
             InitializeComponent();
-            
-            _bgWorker.ProgressChanged += (_, e) => { _wLoading.lblMain.Content = e.UserState; };
-            _bgWorker.WorkerReportsProgress = true;
-            
-            _timerAfterChoice.Tick += (obj, e) =>
-            {
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    _timerAfterChoice.Stop();
-                    if (lblCorrect.Visibility == Visibility.Visible) points += 5;
-                    else if (lblWrong.Tag.ToString() == "timeout")
-                    {
-                        points -= 15;
-                        if (points < 0) points = 0;
-                    }
-                    else points = 0;
-                    lblPoints.Content = points;
-                    if (miCountdown.IsChecked)
-                    {
-                        lblCountdown.Content = _seconds = _s.CountdownSeconds;
-                        spCountdown.ClearValue(StackPanel.ToolTipProperty);
-                        _timerCountdown.Start();
-                    }
-                    askQuestion();
-                }));
-            };
-            _timerAfterChoice.Interval = TimeSpan.FromSeconds(_s.TimeAfterChoice);
+        }
 
-            _timerCountdown.Tick += (obj, e) =>
-            {
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    lblCountdown.Content = --_seconds;
-                    if (_seconds == 0)
-                    {
-                        _timerCountdown.Stop();
-                        rb_Click(
-                            spRbs.Children.OfType<RadioButton>()
-                            .First(x => ((x.Content as TextBlock).Tag as TBTag).isCorrectChoice == false),
-                            null
-                        );
-                    }
-                }));
-            };
-            _timerCountdown.Interval = new TimeSpan(0, 0, 1);
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            if (_isInitialized) return;
+
+            _formattedTitle = Title + " ({0})";
+            _bgWorker.ProgressChanged += (_, evnt) => { _wLoading.lblMain.Content = evnt.UserState; };
+            _bgWorker.WorkerReportsProgress = true;
+            _bgWorker.WorkerSupportsCancellation = true;
+            _bgWorker.DoWork += Worker_Init;
+            _bgWorker.RunWorkerCompleted += Worker_InitComplete;
+            _isInitialized = true;
+            _wLoading = new LoadingWindow();
+            _bgWorker.RunWorkerAsync();
+            _wLoading.ShowDialog();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -108,84 +81,6 @@ namespace VocabularyGame
             saveRecord();
             _s.Save();
             Environment.Exit(0);
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            int i;
-            Thickness mirbMargin = new Thickness(-24, 0, -50, 0);
-            Thickness mirbPadding = new Thickness(15, 0, 0, 0);
-            Thickness rbMargin = new Thickness(0, 10, 0, 0);
-
-            _formattedTitle = Title + " ({0})";
-            _wLoading = new LoadingWindow();
-            _wRecords = new RecordsWindow(this);
-            MinHeight = ActualHeight;
-            MinWidth = ActualWidth;
-            if (!Directory.Exists("sounds")) Directory.CreateDirectory("sounds");
-            
-            for (i = 0; i < miAnswerTypes.Items.Count; i++)
-            {
-                MenuItem mi = miAnswerTypes.Items[i] as MenuItem;
-                mi.Click += miAnswerTypes_Click;
-                mi.IsCheckable = true;
-                _answerTypes[i] = mi.IsChecked = (bool)_s["AT" + mi.Name.Substring(2)];
-            }
-            miAutoPronounce.IsChecked = _s.AutoPronounce;
-            if (_s.Countdown)
-            {
-                miCountdown.IsChecked = true;
-                miCountdown_Click(null, null);
-            }
-            foreach (RadioButton mirb in miRepeatingLimit.Items)
-            {
-                mirb.Margin = mirbMargin;
-                mirb.Padding = mirbPadding;
-                int iTag = int.Parse(mirb.Tag.ToString());
-                if (iTag == _s.RepeatingsLimit)
-                {
-                    _repeatingLimit = iTag;
-                    mirb.IsChecked = true;
-                }
-                mirb.Checked += mirbRepeatingLimit_Checked;
-            }
-            if (WinAPI.GetSystemDefaultLCID() != 1071)
-                mirbMacedonian.IsEnabled = false;
-            else if (_s.Language == "mk-MK") mirbMacedonian.IsChecked = true;
-            foreach (RadioButton mirb in miLanguage.Items)
-            {
-                mirb.Checked += mirbLangueage_Checked;
-                mirb.Margin = mirbMargin;
-                mirb.Padding = mirbPadding;
-            }
-            
-            for (i = 0; i < 5; i++)
-            {
-                RadioButton rb = new RadioButton();
-                rb.Height = 50;
-                rb.Width = spRbs.ActualWidth;
-                rb.Margin = rbMargin;
-                rb.Click += rb_Click;
-                
-                TextBlock tb = new TextBlock();
-                tb.FontSize = 16;
-                tb.TextWrapping = TextWrapping.Wrap;
-
-                rb.Content = tb;
-                spRbs.Children.Add(rb);
-            }
-            
-            if (!File.Exists(_s.DictionaryPath))
-            {
-                miLoadXlsm_Click(null, null);
-                if (!File.Exists(_s.DictionaryPath))
-                {
-                    _s.DictionaryPath = "";
-                    _s.Save();
-                    Environment.Exit(0);
-                }
-            }
-            else gameInit();
         }
 
 #endregion
@@ -303,12 +198,139 @@ namespace VocabularyGame
 
         #region Worker Events
 
+        private void Worker_Init(object sender, DoWorkEventArgs e)
+        {
+            _bgWorker.ReportProgress(0, t("init"));
+
+            _timerAfterChoice.Tick += (_, __) =>
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    _timerAfterChoice.Stop();
+                    if (lblCorrect.Visibility == Visibility.Visible) points += 5;
+                    else if (lblWrong.Tag.ToString() == "timeout")
+                    {
+                        points -= 15;
+                        if (points < 0) points = 0;
+                    }
+                    else points = 0;
+                    lblPoints.Content = points;
+                    if (miCountdown.IsChecked)
+                    {
+                        lblCountdown.Content = _seconds = _s.CountdownSeconds;
+                        spCountdown.ClearValue(StackPanel.ToolTipProperty);
+                        _timerCountdown.Start();
+                    }
+                    askQuestion();
+                }));
+            };
+            _timerAfterChoice.Interval = TimeSpan.FromSeconds(_s.TimeAfterChoice);
+
+            _timerCountdown.Tick += (_, __) =>
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    lblCountdown.Content = --_seconds;
+                    if (_seconds == 0)
+                    {
+                        _timerCountdown.Stop();
+                        rb_Click(
+                            spRbs.Children.OfType<RadioButton>()
+                            .First(x => ((x.Content as TextBlock).Tag as TBTag).isCorrectChoice == false),
+                            null
+                        );
+                    }
+                }));
+            };
+            _timerCountdown.Interval = new TimeSpan(0, 0, 1);
+        }
+
+        private void Worker_InitComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            int i;
+            Thickness mirbMargin = new Thickness(-24, 0, -50, 0);
+            Thickness mirbPadding = new Thickness(15, 0, 0, 0);
+            Thickness rbMargin = new Thickness(0, 10, 0, 0);
+
+            _wRecords = new RecordsWindow(this);
+            MinHeight = ActualHeight;
+            MinWidth = ActualWidth;
+
+            if (!Directory.Exists("sounds")) Directory.CreateDirectory("sounds");
+
+            for (i = 0; i < miAnswerTypes.Items.Count; i++)
+            {
+                MenuItem mi = miAnswerTypes.Items[i] as MenuItem;
+                mi.Click += miAnswerTypes_Click;
+                mi.IsCheckable = true;
+                _answerTypes[i] = mi.IsChecked = (bool)_s["AT" + mi.Name.Substring(2)];
+            }
+            miAutoPronounce.IsChecked = _s.AutoPronounce;
+            if (_s.Countdown)
+            {
+                miCountdown.IsChecked = true;
+                miCountdown_Click(null, null);
+            }
+            foreach (RadioButton mirb in miRepeatingLimit.Items)
+            {
+                mirb.Margin = mirbMargin;
+                mirb.Padding = mirbPadding;
+                int iTag = int.Parse(mirb.Tag.ToString());
+                if (iTag == _s.RepeatingsLimit)
+                {
+                    _repeatingLimit = iTag;
+                    mirb.IsChecked = true;
+                }
+                mirb.Checked += mirbRepeatingLimit_Checked;
+            }
+            if (WinAPI.GetSystemDefaultLCID() != 1071)
+                mirbMacedonian.IsEnabled = false;
+            else if (_s.Language == "mk-MK") mirbMacedonian.IsChecked = true;
+            foreach (RadioButton mirb in miLanguage.Items)
+            {
+                mirb.Checked += mirbLangueage_Checked;
+                mirb.Margin = mirbMargin;
+                mirb.Padding = mirbPadding;
+            }
+
+            for (i = 0; i < 5; i++)
+            {
+                RadioButton rb = new RadioButton();
+                rb.Height = 50;
+                rb.Width = spRbs.ActualWidth;
+                rb.Margin = rbMargin;
+                rb.Click += rb_Click;
+
+                TextBlock tb = new TextBlock();
+                tb.FontSize = 16;
+                tb.TextWrapping = TextWrapping.Wrap;
+
+                rb.Content = tb;
+                spRbs.Children.Add(rb);
+            }
+
+            _bgWorker.DoWork -= Worker_Init;
+            _bgWorker.RunWorkerCompleted -= Worker_InitComplete;
+
+            if (!File.Exists(_s.DictionaryPath))
+            {
+                miLoadXlsm_Click(null, null);
+                if (!File.Exists(_s.DictionaryPath))
+                {
+                    _s.DictionaryPath = "";
+                    _s.Save();
+                    Environment.Exit(0);
+                }
+            }
+            else gameInit();
+        }
+
         private void Worker_Sound(object sender, DoWorkEventArgs e)
         {
             string sName = e.Argument.ToString();
             Uri soundFile = new Uri(Path.GetFullPath("sounds/" + sName.ToLower() + ".mp3"));
 
-            if (!File.Exists(soundFile.LocalPath))
+            if (_isInternetOk && !File.Exists(soundFile.LocalPath))
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -320,10 +342,7 @@ namespace VocabularyGame
                 }));
 
                 WebClient wc = new WebClient();
-                Action<string, string> aDownload = (fileName, filePath) =>
-                {
-                    wc.DownloadFile(_s.GStaticLink + fileName + ".mp3", filePath);
-                };
+                Action<string, string> aDownload = (fileName, filePath) => { wc.DownloadFile(_s.GStaticLink + fileName + ".mp3", filePath); };
                 if (sName.Contains(" "))
                     try { aDownload(sName.Replace(" ", "_"), soundFile.LocalPath); }
                     catch (WebException)
@@ -391,7 +410,7 @@ namespace VocabularyGame
             _bgWorker.ReportProgress(0, String.Format(t("dictGeneration"), _xlsmSafeFileName));
             _odict.Clear();
 
-            int i = 2;
+            int flags, i = 2;
             var excel = new Excel.App(_s.DictionaryPath);
             string key = excel.getString("A" + i);
             while (!String.IsNullOrEmpty(key))
@@ -409,13 +428,21 @@ namespace VocabularyGame
                 Environment.Exit(0);
             }
 
-            string repeatsFn = "dat/" + xlsmSafeFileNameNoExt + _s.RepeatsSuffix;
-            _bgWorker.ReportProgress(90, String.Format(t("loadingRepetitions"), repeatsFn));
-            if (File.Exists(repeatsFn))
-                using (FileStream fs = new FileStream(repeatsFn, FileMode.Open))
+            string fn = "dat/" + xlsmSafeFileNameNoExt + _s.RepeatsSuffix;
+            _bgWorker.ReportProgress(70, String.Format(t("loadingRepetitions"), fn));
+            if (File.Exists(fn))
+                using (FileStream fs = new FileStream(fn, FileMode.Open))
                     _dictRepeats = binFormatter.Deserialize(fs) as Dictionary<string, byte>;
+            //foreach (var kvp in _dictRepeats) Console.WriteLine("{0}, {1}", kvp.Key, kvp.Value);
 
-            _wRecords.deserializeOC("dat/" + xlsmSafeFileNameNoExt + _s.RecordsSuffix);
+            fn = "dat/" + xlsmSafeFileNameNoExt + _s.RecordsSuffix;
+            _bgWorker.ReportProgress(80, String.Format(t("deserializeRecords"), fn));
+            _wRecords.deserializeOC(fn);
+
+            _bgWorker.ReportProgress(90, t("checkConnection"));
+            _isInternetOk = WinAPI.InternetGetConnectedState(out flags, 0);
+            if (_isInternetOk)
+                _isInternetOk = WinAPI.InternetCheckConnection("http://www.google.com/", 1, 0);
         }
 
         private void Worker_StartupComplete(object sender, RunWorkerCompletedEventArgs e)
@@ -576,6 +603,7 @@ namespace VocabularyGame
                     tb.Tag = tag;
                 }
             }
+
             _bgWorker.RunWorkerAsync(Regex.Replace(lblQuestion.Content as string, @" \(\w+\)", ""));
             lblCorrect.Visibility = Visibility.Hidden;
             lblWrong.Visibility = Visibility.Hidden;

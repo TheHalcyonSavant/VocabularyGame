@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:my="clr-namespace:VocabularyGame"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
-        Closing="Window_Closing" Icon="/VocabularyGame;component/images/Book.ico"
-        Loaded="Window_Loaded" SizeToContent="WidthAndHeight" Title="Vocabulary Game" WindowStartupLocation="CenterScreen">
+        Activated="Window_Activated" Closing="Window_Closing" Icon="/VocabularyGame;component/images/Book.ico"
+        SizeToContent="WidthAndHeight" Title="Vocabulary Game" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="Label" x:Key="bottomLabels">
             <Setter Property="FontSize" Value="24" />

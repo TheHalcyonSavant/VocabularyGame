@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows;
 using System.Runtime.InteropServices;
+using System.Net;
 
 namespace VocabularyGame
 {
@@ -117,6 +118,12 @@ namespace VocabularyGame
     public class WinAPI
     {
         public const int SW_SHOWMAXIMIZED = 3;
+
+        [DllImport("wininet.dll", SetLastError = true)]
+        public static extern bool InternetCheckConnection(string lpszUrl, int dwFlags, int dwReserved);
+
+        [DllImport("wininet.dll", SetLastError = true)]
+        public static extern bool InternetGetConnectedState(out int lpdwFlags, int dwReserved);
 
         [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
