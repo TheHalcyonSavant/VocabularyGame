@@ -41,8 +41,9 @@
     <ApplicationIcon>images\Book.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExcelApp">
-      <HintPath>..\..\ExcelApp\ExcelApp\bin\Debug\ExcelApp.dll</HintPath>
+    <Reference Include="ExcelApp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExcelApp\ExcelApp\bin\Release\ExcelApp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

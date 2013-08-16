@@ -32,6 +32,7 @@ namespace VocabularyGame
         private bool _isInternetOk;
         private bool[] _answerTypes = new bool[3];
         private int _iPlayWords;
+        private int _missedODictIdx = 0;
         private int _repeatingLimit;
         private string _formattedTitle;
         private string _xlsmSafeFileName = "";
@@ -148,8 +149,9 @@ namespace VocabularyGame
 
         private void miOpenXlsm_Click(object sender, RoutedEventArgs e)
         {
-            Process p = Process.Start(_s.DictionaryPath);
-            WinAPI.ShowWindow(p.MainWindowHandle, WinAPI.SW_SHOWMAXIMIZED);
+            Excel.App excel = new Excel.App(_s.DictionaryPath, true);
+            WinAPI.ShowWindow(excel.MainWindowHandle, WinAPI.SW_SHOWMAXIMIZED);
+            excel.selectRange("A" + (_missedODictIdx + 2));
         }
 
         private void mirbLangueage_Checked(object sender, RoutedEventArgs e)
@@ -411,7 +413,7 @@ namespace VocabularyGame
             _odict.Clear();
 
             int flags, i = 2;
-            var excel = new Excel.App(_s.DictionaryPath);
+            Excel.App excel = new Excel.App(_s.DictionaryPath);
             string key = excel.getString("A" + i);
             while (!String.IsNullOrEmpty(key))
             {
@@ -518,12 +520,14 @@ namespace VocabularyGame
                 TextBlock tb = (spRbs.Children[tag.correctRbIdx] as RadioButton).Content as TextBlock;
                 tb.Background = Brushes.LightSkyBlue;
                 tb.Foreground = Brushes.Black;
+                _missedODictIdx = tag.correctODictIdx;
 
                 if (_dictRepeats.ContainsKey(tag.repeatsKey))
                 {
                     _dictRepeats[tag.repeatsKey]--;
                     if (_dictRepeats[tag.repeatsKey] < 0) _dictRepeats.Remove(tag.repeatsKey);
                 }
+
                 saveRecord();
             }
             spRbs.IsEnabled = false;
