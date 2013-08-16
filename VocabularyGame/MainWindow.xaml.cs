@@ -604,7 +604,8 @@ namespace VocabularyGame
                 }
             }
 
-            _bgWorker.RunWorkerAsync(Regex.Replace(lblQuestion.Content as string, @" \(\w+\)", ""));
+            if (!_bgWorker.IsBusy)
+                _bgWorker.RunWorkerAsync(Regex.Replace(lblQuestion.Content as string, @" \(\w+\)", ""));
             lblCorrect.Visibility = Visibility.Hidden;
             lblWrong.Visibility = Visibility.Hidden;
             spRbs.IsEnabled = true;
