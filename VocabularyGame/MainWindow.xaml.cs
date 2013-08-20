@@ -150,8 +150,8 @@ namespace VocabularyGame
         private void miOpenXlsm_Click(object sender, RoutedEventArgs e)
         {
             Excel.App excel = new Excel.App(_s.DictionaryPath, true);
-            WinAPI.ShowWindow(excel.MainWindowHandle, WinAPI.SW_SHOWMAXIMIZED);
             excel.selectRange("A" + (_missedODictIdx + 2));
+            WinAPI.ShowWindow(excel.MainWindowHandle, WinAPI.SW_SHOWMAXIMIZED);
         }
 
         private void mirbLangueage_Checked(object sender, RoutedEventArgs e)

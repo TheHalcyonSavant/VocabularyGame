@@ -112,37 +112,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E082B1B683A146D6AFFABCB00BCCC475"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_43B20F94B879842CA7CCA72040CB9E85"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5CAD00C5E910F0CD8EBE2F8F4CF61292"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2A01C0A43DCA7C911CAE57F5564D5511"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8CD0CCABEDF18BDB007CEB0B7837D63F"
+        "OwnerKey" = "8:_5F56D7AD818C444BBDBD695724909182"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -154,7 +124,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5F56D7AD818C444BBDBD695724909182"
+        "OwnerKey" = "8:_8CD0CCABEDF18BDB007CEB0B7837D63F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2A01C0A43DCA7C911CAE57F5564D5511"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5CAD00C5E910F0CD8EBE2F8F4CF61292"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_43B20F94B879842CA7CCA72040CB9E85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E082B1B683A146D6AFFABCB00BCCC475"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -325,11 +325,6 @@
             "AssemblyAsmDisplayName" = "8:ExcelApp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_0FE705BAC9DB1DC72842D4D4CC1DA9B9"
-                    {
-                    "Name" = "8:ExcelApp.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:ExcelApp.DLL"
             "TargetName" = "8:"
@@ -356,11 +351,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Vbe.Interop, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_2A01C0A43DCA7C911CAE57F5564D5511"
-                    {
-                    "Name" = "8:Microsoft.Vbe.Interop.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.Vbe.Interop.DLL"
             "TargetName" = "8:"
@@ -458,11 +448,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5CAD00C5E910F0CD8EBE2F8F4CF61292"
-                    {
-                    "Name" = "8:Microsoft.Office.Interop.Excel.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.Office.Interop.Excel.DLL"
             "TargetName" = "8:"
@@ -591,11 +576,6 @@
             "AssemblyAsmDisplayName" = "8:office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_8CD0CCABEDF18BDB007CEB0B7837D63F"
-                    {
-                    "Name" = "8:office.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:office.DLL"
             "TargetName" = "8:"
@@ -814,7 +794,7 @@
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
-        "DetectNewerInstalledVersion" = "11:TRUE"
+        "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:TheHalcyonSavant"
