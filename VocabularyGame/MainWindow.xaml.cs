@@ -149,8 +149,10 @@ namespace VocabularyGame
 
         private void miOpenXlsm_Click(object sender, RoutedEventArgs e)
         {
+            int row = _missedODictIdx + 2;
+
             Excel.App excel = new Excel.App(_s.DictionaryPath, true);
-            excel.selectRange("A" + (_missedODictIdx + 2));
+            excel.selectRange("A" + row + ":D" + row);
             WinAPI.ShowWindow(excel.MainWindowHandle, WinAPI.SW_SHOWMAXIMIZED);
         }
 
@@ -249,6 +251,8 @@ namespace VocabularyGame
 
         private void Worker_InitComplete(object sender, RunWorkerCompletedEventArgs e)
         {
+            bool isWin8OrAbove = Environment.OSVersion.Platform == PlatformID.Win32NT
+                && Environment.OSVersion.Version.Major >= 7;
             int i;
             Thickness mirbMargin = new Thickness(-24, 0, -50, 0);
             Thickness mirbPadding = new Thickness(15, 0, 0, 0);
@@ -302,6 +306,7 @@ namespace VocabularyGame
                 rb.Width = spRbs.ActualWidth;
                 rb.Margin = rbMargin;
                 rb.Click += rb_Click;
+                if (isWin8OrAbove) rb.VerticalContentAlignment = VerticalAlignment.Center;
 
                 TextBlock tb = new TextBlock();
                 tb.FontSize = 16;
