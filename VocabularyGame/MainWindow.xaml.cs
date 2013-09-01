@@ -419,12 +419,11 @@ namespace VocabularyGame
 
             int flags, i = 2;
             Excel.App excel = new Excel.App(_s.DictionaryPath);
-            string key = excel.getString("A" + i);
+            string key = excel.getString("A" + i).Trim();
             while (!String.IsNullOrEmpty(key))
             {
-                key = key.Trim();
                 _odict[key] = new Translation(excel, i, key);
-                key = excel.getString("A" + ++i);
+                key = excel.getString("A" + ++i).Trim();
             }
             excel.Close();
             if (_odict.Count < 5)
@@ -489,6 +488,7 @@ namespace VocabularyGame
         private void rb_Click(object sender, RoutedEventArgs e)
         {
             TBTag tag = ((sender as RadioButton).Content as TextBlock).Tag as TBTag;
+            Console.WriteLine(tag.correctODictIdx);
             if (tag.isCorrectChoice)
             {
                 lblCorrect.Content = t("lblCorrect");
@@ -498,8 +498,8 @@ namespace VocabularyGame
                     if (diffToRecord > 0 && diffToRecord <= 15)
                         lblCorrect.Content = String.Format(t("lblCorrectBeforeRecord"), diffToRecord);
                 }
+                lblWrong.Visibility = Visibility.Collapsed;
                 lblCorrect.Visibility = Visibility.Visible;
-                lblWrong.Visibility = Visibility.Hidden;
 
                 if (_dictRepeats.ContainsKey(tag.repeatsKey))
                 {
@@ -510,7 +510,7 @@ namespace VocabularyGame
             }
             else
             {
-                lblCorrect.Visibility = Visibility.Hidden;
+                lblCorrect.Visibility = Visibility.Collapsed;
                 if (e == null)
                 {
                     lblWrong.Content = t("lblTimeUp");

@@ -13,7 +13,7 @@
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <Setter Property="Visibility" Value="Hidden" />
+            <Setter Property="Visibility" Value="Collapsed" />
         </Style>
         <Style TargetType="Label" x:Key="rightLabels">
             <Setter Property="BorderBrush" Value="Black" />
