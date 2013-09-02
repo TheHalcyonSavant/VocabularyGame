@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -44,6 +44,7 @@ namespace VocabularyGame
         private LoadingWindow _wLoading;
         private OrderedDictionary _odict = new OrderedDictionary();
         private RecordsWindow _wRecords;
+        private Regex _rgxNumKeys = new Regex("^(D|NumPad)(?<num>[1-5])");
         
         public int points;
         public string xlsmSafeFileNameNoExt = "";
@@ -82,6 +83,16 @@ namespace VocabularyGame
             saveRecord();
             _s.Save();
             Environment.Exit(0);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            Match m = _rgxNumKeys.Match(e.Key.ToString());
+            if (!m.Success) return;
+
+            RadioButton rb = spRbs.Children[int.Parse(m.Result("${num}")) - 1] as RadioButton;
+            rb.IsChecked = true;
+            rb.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
 
 #endregion
@@ -419,11 +430,11 @@ namespace VocabularyGame
 
             int flags, i = 2;
             Excel.App excel = new Excel.App(_s.DictionaryPath);
-            string key = excel.getString("A" + i).Trim();
-            while (!String.IsNullOrEmpty(key))
+            string key = excel.getString("A" + i);
+            while (!String.IsNullOrEmpty(key == null ? null : key.Trim()))
             {
                 _odict[key] = new Translation(excel, i, key);
-                key = excel.getString("A" + ++i).Trim();
+                key = excel.getString("A" + ++i);
             }
             excel.Close();
             if (_odict.Count < 5)
@@ -488,7 +499,6 @@ namespace VocabularyGame
         private void rb_Click(object sender, RoutedEventArgs e)
         {
             TBTag tag = ((sender as RadioButton).Content as TextBlock).Tag as TBTag;
-            Console.WriteLine(tag.correctODictIdx);
             if (tag.isCorrectChoice)
             {
                 lblCorrect.Content = t("lblCorrect");
