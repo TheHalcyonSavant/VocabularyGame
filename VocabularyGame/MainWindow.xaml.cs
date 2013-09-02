@@ -64,7 +64,15 @@ namespace VocabularyGame
             if (_isInitialized) return;
 
             _formattedTitle = Title + " ({0})";
-            _bgWorker.ProgressChanged += (_, evnt) => { _wLoading.lblMain.Content = evnt.UserState; };
+            _bgWorker.ProgressChanged += (_, evnt) =>
+            {
+                if (evnt.ProgressPercentage == 100)
+                {
+                    _wLoading.Hide();
+                    return;
+                }
+                _wLoading.lblMain.Content = evnt.UserState;
+            };
             _bgWorker.WorkerReportsProgress = true;
             _bgWorker.WorkerSupportsCancellation = true;
             _bgWorker.DoWork += Worker_Init;
@@ -426,26 +434,36 @@ namespace VocabularyGame
         private void Worker_Startup(object sender, DoWorkEventArgs e)
         {
             _bgWorker.ReportProgress(0, String.Format(t("dictGeneration"), _xlsmSafeFileName));
-            _odict.Clear();
 
+            bool hasDuplicates = false;
             int flags, i = 2;
             Excel.App excel = new Excel.App(_s.DictionaryPath);
-            string key = excel.getString("A" + i);
+            string fn = "dat/" + xlsmSafeFileNameNoExt + _s.RepeatsSuffix, key = excel.getString("A" + i), prevKey = "";
+
+            _odict.Clear();
             while (!String.IsNullOrEmpty(key == null ? null : key.Trim()))
             {
+                if (prevKey == key)
+                {
+                    hasDuplicates = true;
+                    break;
+                }
+                prevKey = key;
                 _odict[key] = new Translation(excel, i, key);
                 key = excel.getString("A" + ++i);
             }
             excel.Close();
-            if (_odict.Count < 5)
+
+            if (hasDuplicates || _odict.Count < 5)
             {
+                _bgWorker.ReportProgress(100);
                 MessageBox.Show(String.Format(t("msgErrorOdict"), _xlsmSafeFileName));
+                if (hasDuplicates) MessageBox.Show(String.Format(t("msgDuplicateFound"), key));
                 _s.DictionaryPath = "";
                 _s.Save();
                 Environment.Exit(0);
             }
 
-            string fn = "dat/" + xlsmSafeFileNameNoExt + _s.RepeatsSuffix;
             _bgWorker.ReportProgress(70, String.Format(t("loadingRepetitions"), fn));
             if (File.Exists(fn))
                 using (FileStream fs = new FileStream(fn, FileMode.Open))
