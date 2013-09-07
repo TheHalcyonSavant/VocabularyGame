@@ -271,7 +271,7 @@ namespace VocabularyGame
         private void Worker_InitComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             bool isWin8OrAbove = Environment.OSVersion.Platform == PlatformID.Win32NT
-                && Environment.OSVersion.Version.Major >= 7;
+                && Environment.OSVersion.Version >= new Version(6, 2, 9200, 0);
             int i;
             Thickness mirbMargin = new Thickness(-24, 0, -50, 0);
             Thickness mirbPadding = new Thickness(15, 0, 0, 0);
@@ -317,7 +317,7 @@ namespace VocabularyGame
                 mirb.Margin = mirbMargin;
                 mirb.Padding = mirbPadding;
             }
-
+            
             for (i = 0; i < 5; i++)
             {
                 RadioButton rb = new RadioButton();
