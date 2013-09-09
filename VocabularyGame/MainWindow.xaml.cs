@@ -30,6 +30,7 @@ namespace VocabularyGame
 
         private bool _isInitialized = false;
         private bool _isInternetOk;
+        private bool _isReadingWrongs = false;
         private bool[] _answerTypes = new bool[3];
         private int _iPlayWords;
         private int _missedODictIdx = 0;
@@ -43,6 +44,7 @@ namespace VocabularyGame
         private List<Uri> _lPlayWords = new List<Uri>();
         private LoadingWindow _wLoading;
         private OrderedDictionary _odict = new OrderedDictionary();
+        private OrderedDictionary _odictWrongs = new OrderedDictionary();
         private RecordsWindow _wRecords;
         private Regex _rgxNumKeys = new Regex("^(D|NumPad)(?<num>[1-5])");
         
@@ -86,9 +88,15 @@ namespace VocabularyGame
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (!Directory.Exists("dat")) Directory.CreateDirectory("dat");
+
             using (FileStream fs = new FileStream("dat/" + xlsmSafeFileNameNoExt + _s.RepeatsSuffix, FileMode.Create))
                 binFormatter.Serialize(fs, _dictRepeats);
+
+            using (FileStream fs = new FileStream("dat/" + xlsmSafeFileNameNoExt + _s.WrongsSuffix, FileMode.Create))
+                binFormatter.Serialize(fs, _odictWrongs);
+
             saveRecord();
+
             _s.Save();
             Environment.Exit(0);
         }
@@ -215,6 +223,7 @@ namespace VocabularyGame
                 }
             }
             mirbEnglish.IsChecked = true;
+            miRepeatWrongs.IsChecked = bool.Parse(_s.Properties["miRepeatWrongs"].DefaultValue.ToString());
         }
 
         #endregion
@@ -317,6 +326,8 @@ namespace VocabularyGame
                 mirb.Margin = mirbMargin;
                 mirb.Padding = mirbPadding;
             }
+            miRepeatWrongs.Header = String.Format(t("miRepeatWrongs"), _s.WrongsLimit);
+            miRepeatWrongs.IsChecked = _s.RepeatWrongs;
             
             for (i = 0; i < 5; i++)
             {
@@ -464,11 +475,17 @@ namespace VocabularyGame
                 Environment.Exit(0);
             }
 
-            _bgWorker.ReportProgress(70, String.Format(t("loadingRepetitions"), fn));
+            _bgWorker.ReportProgress(60, String.Format(t("loadingRepetitions"), fn));
             if (File.Exists(fn))
                 using (FileStream fs = new FileStream(fn, FileMode.Open))
                     _dictRepeats = binFormatter.Deserialize(fs) as Dictionary<string, byte>;
             //foreach (var kvp in _dictRepeats) Console.WriteLine("{0}, {1}", kvp.Key, kvp.Value);
+
+            fn = "dat/" + xlsmSafeFileNameNoExt + _s.WrongsSuffix;
+            _bgWorker.ReportProgress(70, String.Format(t("loadingWrongs"), fn));
+            if (File.Exists(fn))
+                using (FileStream fs = new FileStream(fn, FileMode.Open))
+                    _odictWrongs = binFormatter.Deserialize(fs) as OrderedDictionary;
 
             fn = "dat/" + xlsmSafeFileNameNoExt + _s.RecordsSuffix;
             _bgWorker.ReportProgress(80, String.Format(t("deserializeRecords"), fn));
@@ -535,6 +552,9 @@ namespace VocabularyGame
                     if (_dictRepeats[tag.repeatsKey] > 100) _dictRepeats[tag.repeatsKey] = 100;
                 }
                 else _dictRepeats[tag.repeatsKey] = 1;
+
+                _odictWrongs.Remove(tag.keyEnglish);
+                if (_odictWrongs.Count == 0) _isReadingWrongs = false;
             }
             else
             {
@@ -553,13 +573,16 @@ namespace VocabularyGame
                 TextBlock tb = (spRbs.Children[tag.correctRbIdx] as RadioButton).Content as TextBlock;
                 tb.Background = Brushes.LightSkyBlue;
                 tb.Foreground = Brushes.Black;
-                _missedODictIdx = tag.correctODictIdx;
 
                 if (_dictRepeats.ContainsKey(tag.repeatsKey))
                 {
                     _dictRepeats[tag.repeatsKey]--;
-                    if (_dictRepeats[tag.repeatsKey] < 0) _dictRepeats.Remove(tag.repeatsKey);
+                    if (_dictRepeats[tag.repeatsKey] == 0) _dictRepeats.Remove(tag.repeatsKey);
                 }
+
+                _missedODictIdx = tag.correctODictIdx;
+
+                _odictWrongs[tag.keyEnglish] = tag.answer;
 
                 saveRecord();
             }
@@ -577,7 +600,8 @@ namespace VocabularyGame
 
         private void askQuestion()
         {
-            string answer;
+            int answerType = -1;
+            List<int> lIdxs = Enumerable.Range(0, _odict.Count).ToList();
             RadioButton rb;
             Random rnd = new Random();
             StringBuilder sbHash = new StringBuilder();
@@ -586,28 +610,84 @@ namespace VocabularyGame
             Translation trans;
 
             tag.correctRbIdx = rnd.Next(5);
-            Queue<int> qUniqueIdxs = new Queue<int>(Enumerable.Range(0, _odict.Count).OrderBy(x => rnd.Next()));
-            while (qUniqueIdxs.Count > 0)
+
+            if (!_isReadingWrongs && _odictWrongs.Count >= _s.WrongsLimit) _isReadingWrongs = true;
+            if (_isReadingWrongs && miRepeatWrongs.IsChecked)
             {
-                tag.correctODictIdx = qUniqueIdxs.Dequeue();
-                trans = _odict[tag.correctODictIdx] as Translation;
-                lblQuestion.Content = trans.keyEnglish;
-                tag.isCorrectChoice = true;
-                rb = spRbs.Children[tag.correctRbIdx] as RadioButton;
-                tb = rb.Content as TextBlock;
-                answer = trans.getRandomTranslation(tb, _answerTypes);
-                if (answer != "")
+                tag.keyEnglish = _odictWrongs.Keys.OfType<string>().First();
+                if (_odict.Contains(tag.keyEnglish))
                 {
-                    tag.repeatsKey = trans.keyEnglish + "=" + answer;
-                    tb.Tag = tag;
-                    if (!_dictRepeats.ContainsKey(tag.repeatsKey) || _dictRepeats[tag.repeatsKey] < _repeatingLimit)
-                        break;
+                    tag.answer = _odictWrongs[0] as string;
+                    trans = _odict[tag.keyEnglish] as Translation;
+                    rb = spRbs.Children[tag.correctRbIdx] as RadioButton;
+                    tb = rb.Content as TextBlock;
+                    tb.ClearValue(TextBlock.FontStyleProperty);
+                    tb.ClearValue(TextBlock.FontWeightProperty);
+                    if (trans.llLexicon.Contains(tag.answer))
+                    {
+                        tb.FontStyle = FontStyles.Italic;
+                        answerType = 0;
+                    }
+                    else
+                    {
+                        foreach (List<string> l in trans.llSynonyms)
+                            if (l.Contains(tag.answer))
+                            {
+                                answerType = 1;
+                                tb.FontWeight = FontWeights.Bold;
+                                break;
+                            }
+                        if (answerType == -1)
+                            foreach (List<string> l in trans.llMacedonian)
+                                if (l.Contains(tag.answer))
+                                {
+                                    answerType = 2;
+                                    break;
+                                }
+                    }
+                    if (answerType > -1)
+                    {
+                        lblQuestion.Content = trans.keyEnglish;
+                        lIdxs.Remove(trans.oIdx);
+                        tag.correctODictIdx = trans.oIdx;
+                        tag.isCorrectChoice = true;
+                        tb.Text = tag.answer;
+                        tb.Tag = tag;
+                    }
+                    else
+                    {
+                        tb.ClearValue(TextBlock.FontStyleProperty);
+                        tb.ClearValue(TextBlock.FontWeightProperty);
+                        tag.answer = null;
+                    }
                 }
             }
-            if (qUniqueIdxs.Count < 5)
+
+            Queue<int> qUniqueIdxs = new Queue<int>(lIdxs.OrderBy(x => rnd.Next()));
+            if (String.IsNullOrEmpty(tag.answer))
             {
-                MessageBox.Show(String.Format(t("msgMaster"), _s.RepeatsSuffix));
-                return;
+                while (qUniqueIdxs.Count > 0)
+                {
+                    tag.correctODictIdx = qUniqueIdxs.Dequeue();
+                    trans = _odict[tag.correctODictIdx] as Translation;
+                    lblQuestion.Content = trans.keyEnglish;
+                    tag.isCorrectChoice = true;
+                    rb = spRbs.Children[tag.correctRbIdx] as RadioButton;
+                    tb = rb.Content as TextBlock;
+                    tag.answer = trans.getRandomTranslation(tb, _answerTypes);
+                    if (tag.answer != "")
+                    {
+                        tag.keyEnglish = trans.keyEnglish;
+                        tb.Tag = tag;
+                        if (!_dictRepeats.ContainsKey(tag.repeatsKey) || _dictRepeats[tag.repeatsKey] < _repeatingLimit)
+                            break;
+                    }
+                }
+                if (qUniqueIdxs.Count < 5)
+                {
+                    MessageBox.Show(String.Format(t("msgMaster"), _s.RepeatsSuffix));
+                    return;
+                }
             }
 
             for (int i = 0; i < 5; i++)
@@ -621,10 +701,11 @@ namespace VocabularyGame
                 {
                     tag = new TBTag()
                     {
+                        answer = tag.answer,
                         isCorrectChoice = false,
                         correctODictIdx = tag.correctODictIdx,
                         correctRbIdx = tag.correctRbIdx,
-                        repeatsKey = tag.repeatsKey
+                        keyEnglish = tag.keyEnglish
                     };
 
                     if (qUniqueIdxs.Count < 5 - i)
@@ -634,8 +715,8 @@ namespace VocabularyGame
                     }
                     while (qUniqueIdxs.Count > 0)
                     {
-                        answer = (_odict[qUniqueIdxs.Dequeue()] as Translation).getRandomTranslation(tb, _answerTypes);
-                        if (answer != "") break;
+                        trans = _odict[qUniqueIdxs.Dequeue()] as Translation;
+                        if (trans.getRandomTranslation(tb, _answerTypes) != "") break;
                     }
                     tb.Tag = tag;
                 }

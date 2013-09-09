@@ -29,7 +29,9 @@ namespace VocabularyGame
         public bool isCorrectChoice;
         public int correctODictIdx;
         public int correctRbIdx;
-        public string repeatsKey;
+        public string answer;
+        public string keyEnglish;
+        public string repeatsKey { get { return keyEnglish + "=" + answer; } }
     }
 
     public class Translation
@@ -41,6 +43,7 @@ namespace VocabularyGame
         private int _row;
         private Excel.App _excel;
 
+        public int oIdx { get { return _row - 2; } }
         public string keyEnglish;
         public List<string> llLexicon;
         public List<List<string>> llMacedonian;
@@ -61,7 +64,7 @@ namespace VocabularyGame
             fillLL(SYNONYMS_COL, ref llSynonyms);
         }
 
-        public string getRandomTranslation(TextBlock tb, bool[] answeTypes)
+        public string getRandomTranslation(TextBlock tb, bool[] answerTypes)
         {
             List<string> subL;
             Random rnd = new Random();
@@ -74,18 +77,18 @@ namespace VocabularyGame
                 switch (options[i])
                 {
                     case 0:
-                        if (!answeTypes[0] || llLexicon.Count == 0) continue;
+                        if (!answerTypes[0] || llLexicon.Count == 0) continue;
                         tb.Text = llLexicon[rnd.Next(llLexicon.Count)];
                         tb.FontStyle = FontStyles.Italic;
                         return tb.Text;
                     case 1:
-                        if (!answeTypes[1] || llSynonyms.Count == 0) continue;
+                        if (!answerTypes[1] || llSynonyms.Count == 0) continue;
                         subL = llSynonyms[rnd.Next(llSynonyms.Count)];
                         tb.Text = subL[rnd.Next(subL.Count)];
                         tb.FontWeight = FontWeights.Bold;
                         return tb.Text;
                     case 2:
-                        if (!answeTypes[2] || llMacedonian.Count == 0) continue;
+                        if (!answerTypes[2] || llMacedonian.Count == 0) continue;
                         subL = llMacedonian[rnd.Next(llMacedonian.Count)];
                         tb.Text = subL[rnd.Next(subL.Count)];
                         return tb.Text;

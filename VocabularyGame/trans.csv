@@ -36,7 +36,9 @@ VocabularyGame.g.en-US.resources:stringresources.baml,lblCorrectBeforeRecord:Sys
 VocabularyGame.g.en-US.resources:stringresources.baml,lblTimeUp:System.String.$Content,None,True,True,,Времето истече
 VocabularyGame.g.en-US.resources:stringresources.baml,lblWrong:System.String.$Content,None,True,True,,Погрешно
 VocabularyGame.g.en-US.resources:stringresources.baml,loadingRepetitions:System.String.$Content,None,True,True,,Вчитување на повторувањата од &apos;{0}&apos; ...
+VocabularyGame.g.en-US.resources:stringresources.baml,loadingWrongs:System.String.$Content,None,True,True,,Вчитување на погрешните избори од &apos;{0}&apos; ...
 VocabularyGame.g.en-US.resources:stringresources.baml,init:System.String.$Content,None,True,True,,Иницијализирање ...
+VocabularyGame.g.en-US.resources:stringresources.baml,miRepeatWrongs:System.String.$Content,None,True,True,,Повтарање на последните {0} погрешни избори
 VocabularyGame.g.en-US.resources:stringresources.baml,msgDuplicateFound:System.String.$Content,None,True,True,,Пронајден е дупликат: &apos;{0}&apos;.
 VocabularyGame.g.en-US.resources:stringresources.baml,msgErrorOdict:System.String.$Content,None,True,True,,Речникот &apos;{0}&apos; мора да содржи барем 5 реда и да нема дупликати во првата колона 'English'
 VocabularyGame.g.en-US.resources:stringresources.baml,msgMaster:System.String.$Content,None,True,True,,Браво мајсторе - сите прашања се точни !\nАко сакаш оваа порака да не се појавува\nтогаш избери повисоко ограничување во подесувањето за погодени одговори\nили избери повеќе типови на одговор\n или само избриши го &apos;{0}&apos; од главната папка и рестартирај ја играта

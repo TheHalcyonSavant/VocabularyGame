@@ -9,7 +9,9 @@
     <sys:String x:Key="lblTimeUp" x:Uid="lblTimeUp">Time is up</sys:String>
     <sys:String x:Key="lblWrong" x:Uid="lblWrong">Wrong</sys:String>
     <sys:String x:Key="loadingRepetitions" x:Uid="loadingRepetitions">Loading repetitions from '{0}' ...</sys:String>
+    <sys:String x:Key="loadingWrongs" x:Uid="loadingWrongs">Loading wrong choices from '{0}' ...</sys:String>
     <sys:String x:Key="init" x:Uid="init">Initializing ...</sys:String>
+    <sys:String x:Key="miRepeatWrongs" x:Uid="miRepeatWrongs">Repeat the last {0} wrong choices</sys:String>
     <sys:String x:Key="msgDuplicateFound" x:Uid="msgDuplicateFound">Duplicate key found: '{0}'.</sys:String>
     <sys:String x:Key="msgErrorOdict" x:Uid="msgErrorOdict">
         The file '{0}' must have at least 5 rows and no duplicates in the first column 'English'
