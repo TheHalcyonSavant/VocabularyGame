@@ -247,12 +247,6 @@ namespace VocabularyGame
                     }
                     else points = 0;
                     lblPoints.Content = points;
-                    if (miCountdown.IsChecked)
-                    {
-                        lblCountdown.Content = _seconds = _s.CountdownSeconds;
-                        spCountdown.ClearValue(StackPanel.ToolTipProperty);
-                        _timerCountdown.Start();
-                    }
                     askQuestion();
                 }));
             };
@@ -726,6 +720,12 @@ namespace VocabularyGame
                 _bgWorker.RunWorkerAsync(Regex.Replace(lblQuestion.Content as string, @" \(\w+\)", ""));
             lblCorrect.Visibility = Visibility.Hidden;
             lblWrong.Visibility = Visibility.Hidden;
+            if (miCountdown.IsChecked)
+            {
+                lblCountdown.Content = _seconds = _s.CountdownSeconds;
+                spCountdown.ClearValue(StackPanel.ToolTipProperty);
+                _timerCountdown.Start();
+            }
             spRbs.IsEnabled = true;
         }
 
