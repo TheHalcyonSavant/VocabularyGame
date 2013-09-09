@@ -25,7 +25,7 @@ This excel file contains 4 columns:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **D** : Macedonian - direct Cyrillic translation.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Columns **B**, **C** and **D** can have more then one meaning separated by semicolon and new line (e.g. see *calf*). Also, those columns can be empty if a translation or explanation is not necessary. The 5 random answers are generated from these 3 columns. 
 
-##Settings
+##User Settings
 
 ####Answer Types
 corresponds to 'dictionary.xlsm' columns: *Lexicon*, **Synonyms** and Macedonian. The 5 random choices are generated through limitation on these checked MenuItems (answer types). For example, if you check Lexicon and Synonyms, but uncheck Macedonian, then you will NOT see Macedonian (Cyrillic) words in the 5 random choices from the next question.
@@ -33,6 +33,9 @@ corresponds to 'dictionary.xlsm' columns: *Lexicon*, **Synonyms** and Macedonian
 
 ####Auto-Pronounce question
 Automatically pronounce the question on every new round.
+
+####Countdown Timer
+When you check this setting, a "Timer" box is showed at the right of the answers and below the points. The time is set at 20 seconds and when the time is up you loose 15 points. The countdown starts from the next question.
 
 ####Don't show me choices I guessed more then
 This setting limits the repetition of displayed question-answer pairs. For example if you choose "Don't show me choices I guessed more then = 3 times" and if you have guessed question "virtue" with answer "merit" twice already, then this question with this particular answer will not be displayed again.  
@@ -42,8 +45,14 @@ This setting can be very handy if you want to filter very known words, but you w
 ###Language
 User Interface localization language. Needs restart for this setting to take effect.
 
+###Repeat the last 5 wrong choices
+Every time a wrong answer is chosen, the program accumulates them in *dat/{dictionaryWithNoExt}_wrongs.dat* (e.g. *dat/dictionary_records.dat*). After the fifth wrong choice VocabularyGame starts re-asking you with the same wrongfully answered questions, if this setting is checked.
+
 ####Reset All Settings
 Reset all settings in the main menu "Settings" to its default values. The default values can be edited inside *VocabularyGame.exe.config* file under *configuration > userSettings*
+
+##Application Settings
+
 
 Thanx to
 ------------
