@@ -49,10 +49,16 @@ User Interface localization language. Needs restart for this setting to take eff
 Every time a wrong answer is chosen, the program accumulates them in *dat/{dictionaryWithNoExt}_wrongs.dat* (e.g. *dat/dictionary_records.dat*). After the fifth wrong choice VocabularyGame starts re-asking you with the same wrongfully answered questions, if this setting is checked.
 
 ####Reset All Settings
-Reset all settings in the main menu "Settings" to its default values. The default values can be edited inside *VocabularyGame.exe.config* file under *configuration > userSettings*
+Reset all settings in the main menu "Settings" to its default values. The default values can be edited inside *VocabularyGame.exe.config* file under *configuration > userSettings* xml node.
 
 ##Application Settings
-
+The application settings can be edited inside *VocabularyGame.exe.config* file in the program's installation directory under *configuration > applicationSettings* xml node:
+* **CountdownSeconds** (Default: 20)
+* **GStaticLink** (google link needed for downloading word pronunciations)
+* **RecordsSuffix** (Default: _records.dat)
+* **RepeatsSuffix** (Default: _repeats.dat)
+* **WrongsLimit** (The amount of wrong choices limit - see *Repeat the last 5 wrong choices* user setting. Default: 5)
+* **WrongsSuffix** (Default: _wrongs.dat)
 
 Thanx to
 ------------
