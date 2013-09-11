@@ -175,18 +175,6 @@ namespace VocabularyGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2.5")]
-        public double TimeAfterChoice {
-            get {
-                return ((double)(this["TimeAfterChoice"]));
-            }
-            set {
-                this["TimeAfterChoice"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool RepeatWrongs {
             get {
@@ -194,6 +182,15 @@ namespace VocabularyGame.Properties {
             }
             set {
                 this["RepeatWrongs"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public double TimeAfterChoice {
+            get {
+                return ((double)(this["TimeAfterChoice"]));
             }
         }
     }

@@ -546,7 +546,7 @@ namespace VocabularyGame
                     if (_dictRepeats[tag.repeatsKey] > 100) _dictRepeats[tag.repeatsKey] = 100;
                 }
                 else _dictRepeats[tag.repeatsKey] = 1;
-
+                
                 _odictWrongs.Remove(tag.keyEnglish);
                 if (_odictWrongs.Count == 0) _isReadingWrongs = false;
             }
@@ -650,6 +650,7 @@ namespace VocabularyGame
                     }
                     else
                     {
+                        _odictWrongs.Remove(tag.keyEnglish);
                         tb.ClearValue(TextBlock.FontStyleProperty);
                         tb.ClearValue(TextBlock.FontWeightProperty);
                         tag.answer = null;

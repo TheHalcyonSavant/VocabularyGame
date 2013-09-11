@@ -57,6 +57,7 @@
                     <RadioButton Content="_Macedonian" Name="mirbMacedonian" Tag="mk-MK" x:Uid="mirbMacedonian" />
                 </MenuItem>
                 <MenuItem IsCheckable="True" Name="miRepeatWrongs" />
+                <Separator />
                 <MenuItem Click="miResetSettings_Click" Header="_Reset All Settings" x:Uid="miResetSettings" />
             </MenuItem>
         </Menu>
