@@ -6,6 +6,7 @@
     <sys:String x:Key="dictGeneration" x:Uid="dictGeneration">Generating dictionary from '{0}' ...</sys:String>
     <sys:String x:Key="lblCorrect" x:Uid="lblCorrect">Correct</sys:String>
     <sys:String x:Key="lblCorrectBeforeRecord" x:Uid="lblCorrectBeforeRecord">Correct ({0} points left to break record)</sys:String>
+    <sys:String x:Key="lblRevealed" x:Uid="lblRevealed">Revealed through Excel</sys:String>
     <sys:String x:Key="lblTimeUp" x:Uid="lblTimeUp">Time is up</sys:String>
     <sys:String x:Key="lblWrong" x:Uid="lblWrong">Wrong</sys:String>
     <sys:String x:Key="loadingRepetitions" x:Uid="loadingRepetitions">Loading repetitions from '{0}' ...</sys:String>

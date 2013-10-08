@@ -65,7 +65,14 @@
             <MediaElement LoadedBehavior="Manual" MediaEnded="media_MediaEnded" Name="media" UnloadedBehavior="Manual" />
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Label BorderBrush="#FF62966F" BorderThickness="0,0,0,1" FontSize="22" FontStyle="Italic" FontWeight="ExtraBold"
-                       Foreground="#FF62966F" Height="40" HorizontalContentAlignment="Center" Name="lblQuestion" MinWidth="300" />
+                       Foreground="#FF62966F" Height="40" HorizontalContentAlignment="Center" Name="lblQuestion" MinWidth="300">
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Click="miCopy_Click" Header="Copy" x:Uid="miCopy" />
+                            <MenuItem Click="miReveal_Click" Header="Reveal in Excel File" x:Uid="miReveal" />
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
                 <my:GifImage Cursor="Hand" Height="26" Margin="10,0,0,0" Stretch="Fill" Width="26" x:Name="gifImage" />
             </StackPanel>
         </Grid>

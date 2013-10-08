@@ -38,6 +38,7 @@ namespace VocabularyGame
         private string _formattedTitle;
         private string _xlsmSafeFileName = "";
         private BackgroundWorker _bgWorker = new BackgroundWorker();
+        private CorrectClass _correct = new CorrectClass();
         private Dictionary<string, byte> _dictRepeats = new Dictionary<string, byte>();
         private DispatcherTimer _timerAfterChoice = new DispatcherTimer();
         private DispatcherTimer _timerCountdown = new DispatcherTimer();
@@ -139,6 +140,11 @@ namespace VocabularyGame
             _s.AutoPronounce = (sender as MenuItem).IsChecked;
         }
 
+        private void miCopy_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(lblQuestion.Content.ToString());
+        }
+
         private void miCountdown_Click(object sender, RoutedEventArgs e)
         {
             if (miCountdown.IsChecked)
@@ -176,11 +182,13 @@ namespace VocabularyGame
 
         private void miOpenXlsm_Click(object sender, RoutedEventArgs e)
         {
-            int row = _missedODictIdx + 2;
+            showInExcel(_missedODictIdx);
+        }
 
-            Excel.App excel = new Excel.App(_s.DictionaryPath, true);
-            excel.selectRange("A" + row + ":D" + row);
-            WinAPI.ShowWindow(excel.MainWindowHandle, WinAPI.SW_SHOWMAXIMIZED);
+        private void miReveal_Click(object sender, RoutedEventArgs e)
+        {
+            chooseWrong("revealed");
+            showInExcel(_correct.correctODictIdx);
         }
 
         private void mirbLangueage_Checked(object sender, RoutedEventArgs e)
@@ -260,11 +268,7 @@ namespace VocabularyGame
                     if (_seconds == 0)
                     {
                         _timerCountdown.Stop();
-                        rb_Click(
-                            spRbs.Children.OfType<RadioButton>()
-                            .First(x => ((x.Content as TextBlock).Tag as TBTag).isCorrectChoice == false),
-                            null
-                        );
+                        chooseWrong("timeout");
                     }
                 }));
             };
@@ -334,6 +338,7 @@ namespace VocabularyGame
 
                 TextBlock tb = new TextBlock();
                 tb.FontSize = 16;
+                tb.Tag = i;
                 tb.TextWrapping = TextWrapping.Wrap;
 
                 rb.Content = tb;
@@ -527,8 +532,9 @@ namespace VocabularyGame
 
         private void rb_Click(object sender, RoutedEventArgs e)
         {
-            TBTag tag = ((sender as RadioButton).Content as TextBlock).Tag as TBTag;
-            if (tag.isCorrectChoice)
+            int tag = (int)((sender as RadioButton).Content as TextBlock).Tag;
+
+            if (tag == _correct.correctRbIdx)
             {
                 lblCorrect.Content = t("lblCorrect");
                 if (_wRecords.ocRecordsList.Count > 0)
@@ -540,43 +546,40 @@ namespace VocabularyGame
                 lblWrong.Visibility = Visibility.Collapsed;
                 lblCorrect.Visibility = Visibility.Visible;
 
-                if (_dictRepeats.ContainsKey(tag.repeatsKey))
+                if (_dictRepeats.ContainsKey(_correct.repeatsKey))
                 {
-                    _dictRepeats[tag.repeatsKey]++;
-                    if (_dictRepeats[tag.repeatsKey] > 100) _dictRepeats[tag.repeatsKey] = 100;
+                    _dictRepeats[_correct.repeatsKey]++;
+                    if (_dictRepeats[_correct.repeatsKey] > 100) _dictRepeats[_correct.repeatsKey] = 100;
                 }
-                else _dictRepeats[tag.repeatsKey] = 1;
-                
-                _odictWrongs.Remove(tag.keyEnglish);
+                else _dictRepeats[_correct.repeatsKey] = 1;
+
+                _odictWrongs.Remove(_correct.keyEnglish);
                 if (_odictWrongs.Count == 0) _isReadingWrongs = false;
             }
             else
             {
                 lblCorrect.Visibility = Visibility.Collapsed;
-                if (e == null)
+                lblWrong.Tag = e.Source is string ? e.Source : "";
+                switch (lblWrong.Tag.ToString())
                 {
-                    lblWrong.Content = t("lblTimeUp");
-                    lblWrong.Tag =  "timeout";
-                }
-                else
-                {
-                    lblWrong.Content = t("lblWrong");
-                    lblWrong.Tag =  "";
+                    case "revealed": lblWrong.Content = t("lblRevealed"); break;
+                    case "timeout": lblWrong.Content = t("lblTimeUp"); break;
+                    default: lblWrong.Content = t("lblWrong"); break;
                 }
                 lblWrong.Visibility = Visibility.Visible;
-                TextBlock tb = (spRbs.Children[tag.correctRbIdx] as RadioButton).Content as TextBlock;
+                TextBlock tb = (spRbs.Children[_correct.correctRbIdx] as RadioButton).Content as TextBlock;
                 tb.Background = Brushes.LightSkyBlue;
                 tb.Foreground = Brushes.Black;
 
-                if (_dictRepeats.ContainsKey(tag.repeatsKey))
+                if (_dictRepeats.ContainsKey(_correct.repeatsKey))
                 {
-                    _dictRepeats[tag.repeatsKey]--;
-                    if (_dictRepeats[tag.repeatsKey] == 0) _dictRepeats.Remove(tag.repeatsKey);
+                    _dictRepeats[_correct.repeatsKey]--;
+                    if (_dictRepeats[_correct.repeatsKey] == 0) _dictRepeats.Remove(_correct.repeatsKey);
                 }
 
-                _missedODictIdx = tag.correctODictIdx;
+                _missedODictIdx = _correct.correctODictIdx;
 
-                _odictWrongs[tag.keyEnglish] = tag.answer;
+                _odictWrongs[_correct.keyEnglish] = _correct.answer;
 
                 saveRecord();
             }
@@ -599,25 +602,25 @@ namespace VocabularyGame
             RadioButton rb;
             Random rnd = new Random();
             StringBuilder sbHash = new StringBuilder();
-            TBTag tag = new TBTag();
             TextBlock tb;
             Translation trans;
 
-            tag.correctRbIdx = rnd.Next(5);
+            _correct.answer = null;
+            _correct.correctRbIdx = rnd.Next(5);
 
             if (!_isReadingWrongs && _odictWrongs.Count >= _s.WrongsLimit) _isReadingWrongs = true;
             if (_isReadingWrongs && miRepeatWrongs.IsChecked)
             {
-                tag.keyEnglish = _odictWrongs.Keys.OfType<string>().First();
-                if (_odict.Contains(tag.keyEnglish))
+                _correct.keyEnglish = _odictWrongs.Keys.OfType<string>().First();
+                if (_odict.Contains(_correct.keyEnglish))
                 {
-                    tag.answer = _odictWrongs[0] as string;
-                    trans = _odict[tag.keyEnglish] as Translation;
-                    rb = spRbs.Children[tag.correctRbIdx] as RadioButton;
+                    _correct.answer = _odictWrongs[0] as string;
+                    trans = _odict[_correct.keyEnglish] as Translation;
+                    rb = spRbs.Children[_correct.correctRbIdx] as RadioButton;
                     tb = rb.Content as TextBlock;
                     tb.ClearValue(TextBlock.FontStyleProperty);
                     tb.ClearValue(TextBlock.FontWeightProperty);
-                    if (trans.llLexicon.Contains(tag.answer))
+                    if (trans.llLexicon.Contains(_correct.answer))
                     {
                         tb.FontStyle = FontStyles.Italic;
                         answerType = 0;
@@ -625,7 +628,7 @@ namespace VocabularyGame
                     else
                     {
                         foreach (List<string> l in trans.llSynonyms)
-                            if (l.Contains(tag.answer))
+                            if (l.Contains(_correct.answer))
                             {
                                 answerType = 1;
                                 tb.FontWeight = FontWeights.Bold;
@@ -633,7 +636,7 @@ namespace VocabularyGame
                             }
                         if (answerType == -1)
                             foreach (List<string> l in trans.llMacedonian)
-                                if (l.Contains(tag.answer))
+                                if (l.Contains(_correct.answer))
                                 {
                                     answerType = 2;
                                     break;
@@ -643,38 +646,34 @@ namespace VocabularyGame
                     {
                         lblQuestion.Content = trans.keyEnglish;
                         lIdxs.Remove(trans.oIdx);
-                        tag.correctODictIdx = trans.oIdx;
-                        tag.isCorrectChoice = true;
-                        tb.Text = tag.answer;
-                        tb.Tag = tag;
+                        _correct.correctODictIdx = trans.oIdx;
+                        tb.Text = _correct.answer;
                     }
                     else
                     {
-                        _odictWrongs.Remove(tag.keyEnglish);
+                        _odictWrongs.Remove(_correct.keyEnglish);
                         tb.ClearValue(TextBlock.FontStyleProperty);
                         tb.ClearValue(TextBlock.FontWeightProperty);
-                        tag.answer = null;
+                        _correct.answer = null;
                     }
                 }
             }
 
             Queue<int> qUniqueIdxs = new Queue<int>(lIdxs.OrderBy(x => rnd.Next()));
-            if (String.IsNullOrEmpty(tag.answer))
+            if (String.IsNullOrEmpty(_correct.answer))
             {
                 while (qUniqueIdxs.Count > 0)
                 {
-                    tag.correctODictIdx = qUniqueIdxs.Dequeue();
-                    trans = _odict[tag.correctODictIdx] as Translation;
+                    _correct.correctODictIdx = qUniqueIdxs.Dequeue();
+                    trans = _odict[_correct.correctODictIdx] as Translation;
                     lblQuestion.Content = trans.keyEnglish;
-                    tag.isCorrectChoice = true;
-                    rb = spRbs.Children[tag.correctRbIdx] as RadioButton;
+                    rb = spRbs.Children[_correct.correctRbIdx] as RadioButton;
                     tb = rb.Content as TextBlock;
-                    tag.answer = trans.getRandomTranslation(tb, _answerTypes);
-                    if (tag.answer != "")
+                    _correct.answer = trans.getRandomTranslation(tb, _answerTypes);
+                    if (_correct.answer != "")
                     {
-                        tag.keyEnglish = trans.keyEnglish;
-                        tb.Tag = tag;
-                        if (!_dictRepeats.ContainsKey(tag.repeatsKey) || _dictRepeats[tag.repeatsKey] < _repeatingLimit)
+                        _correct.keyEnglish = trans.keyEnglish;
+                        if (!_dictRepeats.ContainsKey(_correct.repeatsKey) || _dictRepeats[_correct.repeatsKey] < _repeatingLimit)
                             break;
                     }
                 }
@@ -692,17 +691,8 @@ namespace VocabularyGame
                 tb = rb.Content as TextBlock;
                 tb.ClearValue(TextBlock.BackgroundProperty);
                 tb.ClearValue(TextBlock.ForegroundProperty);
-                if (i != tag.correctRbIdx)
+                if (i != _correct.correctRbIdx)
                 {
-                    tag = new TBTag()
-                    {
-                        answer = tag.answer,
-                        isCorrectChoice = false,
-                        correctODictIdx = tag.correctODictIdx,
-                        correctRbIdx = tag.correctRbIdx,
-                        keyEnglish = tag.keyEnglish
-                    };
-
                     if (qUniqueIdxs.Count < 5 - i)
                     {
                         MessageBox.Show(String.Format(t("msgMaster"), _s.RepeatsSuffix));
@@ -713,7 +703,6 @@ namespace VocabularyGame
                         trans = _odict[qUniqueIdxs.Dequeue()] as Translation;
                         if (trans.getRandomTranslation(tb, _answerTypes) != "") break;
                     }
-                    tb.Tag = tag;
                 }
             }
 
@@ -728,6 +717,14 @@ namespace VocabularyGame
                 _timerCountdown.Start();
             }
             spRbs.IsEnabled = true;
+        }
+
+        private void chooseWrong(string reason)
+        {
+            rb_Click(
+                spRbs.Children.OfType<RadioButton>().First(x => (int)(x.Content as TextBlock).Tag != _correct.correctRbIdx),
+                new RoutedEventArgs(null, reason)
+            );
         }
 
         private void gameInit()
@@ -752,6 +749,15 @@ namespace VocabularyGame
                 _wRecords.isSaving = true;
                 _wRecords.ShowDialog();
             }
+        }
+
+        private void showInExcel(int oDictIdx)
+        {
+            int row = oDictIdx + 2;
+
+            Excel.App excel = new Excel.App(_s.DictionaryPath, true);
+            excel.selectRange("A" + row + ":D" + row);
+            WinAPI.ShowWindow(excel.MainWindowHandle, WinAPI.SW_SHOWMAXIMIZED);
         }
 
         private string t(string key)

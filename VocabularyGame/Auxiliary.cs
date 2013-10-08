@@ -24,9 +24,8 @@ namespace VocabularyGame
         }
     }
 
-    public class TBTag
+    public class CorrectClass
     {
-        public bool isCorrectChoice;
         public int correctODictIdx;
         public int correctRbIdx;
         public string answer;

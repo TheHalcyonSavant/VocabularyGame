@@ -3,6 +3,7 @@ VocabularyGame.g.en-US.resources:mainwindow.baml,lblCountdown:System.Windows.Con
 VocabularyGame.g.en-US.resources:mainwindow.baml,mainWindowTitle:System.Windows.Window.Title,Title,True,True,,Игра со зборови
 VocabularyGame.g.en-US.resources:mainwindow.baml,miAnswerTypes:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,_Тип на одговор
 VocabularyGame.g.en-US.resources:mainwindow.baml,miAutoPronounce:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,_Автоматски изговор
+VocabularyGame.g.en-US.resources:mainwindow.baml,miCopy:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,Копирај
 VocabularyGame.g.en-US.resources:mainwindow.baml,miCountdown:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,_Одбројување
 VocabularyGame.g.en-US.resources:mainwindow.baml,miCountdown:System.Windows.FrameworkElement.ToolTip,ToolTip,True,True,,Одбројувањето ќе биде достапно од следното прашање
 VocabularyGame.g.en-US.resources:mainwindow.baml,miExit:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,И_злез
@@ -14,6 +15,7 @@ VocabularyGame.g.en-US.resources:mainwindow.baml,miMacedonian:System.Windows.Con
 VocabularyGame.g.en-US.resources:mainwindow.baml,miOpenXlsm:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,_Отвори речник со Excel
 VocabularyGame.g.en-US.resources:mainwindow.baml,miRecords:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,_Рекорди
 VocabularyGame.g.en-US.resources:mainwindow.baml,miRepeatingLimit:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,_Не покажувај одговори погодени повеќе од
+VocabularyGame.g.en-US.resources:mainwindow.baml,miReveal:System.Windows.Controls.HeaderedItemsControl.Header,Menu,True,True,,Разоткри во Excel
 VocabularyGame.g.en-US.resources:mainwindow.baml,mirbEnglish:System.Windows.Controls.ContentControl.Content,RadioButton,True,True,,_Англиски
 VocabularyGame.g.en-US.resources:mainwindow.baml,mirbMacedonian:System.Windows.Controls.ContentControl.Content,RadioButton,True,True,,_Македонски
 VocabularyGame.g.en-US.resources:mainwindow.baml,mirbRepeatLimit1:System.Windows.Controls.ContentControl.Content,RadioButton,True,True,,_1 пат
@@ -33,6 +35,7 @@ VocabularyGame.g.en-US.resources:stringresources.baml,deserializeRecords:System.
 VocabularyGame.g.en-US.resources:stringresources.baml,dictGeneration:System.String.$Content,None,True,True,,Генерира речник од &apos;{0}&apos; ...
 VocabularyGame.g.en-US.resources:stringresources.baml,lblCorrect:System.String.$Content,None,True,True,,Точно
 VocabularyGame.g.en-US.resources:stringresources.baml,lblCorrectBeforeRecord:System.String.$Content,None,True,True,,Точно (оште {0} поени до нов рекорд)
+VocabularyGame.g.en-US.resources:stringresources.baml,lblRevealed:System.String.$Content,None,True,True,,Разоткриен преку Excel
 VocabularyGame.g.en-US.resources:stringresources.baml,lblTimeUp:System.String.$Content,None,True,True,,Времето истече
 VocabularyGame.g.en-US.resources:stringresources.baml,lblWrong:System.String.$Content,None,True,True,,Погрешно
 VocabularyGame.g.en-US.resources:stringresources.baml,loadingRepetitions:System.String.$Content,None,True,True,,Вчитување на повторувањата од &apos;{0}&apos; ...
