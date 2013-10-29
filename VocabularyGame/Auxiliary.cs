@@ -63,6 +63,20 @@ namespace VocabularyGame
             fillLL(SYNONYMS_COL, ref llSynonyms);
         }
 
+        public bool findMacedonian(string needle)
+        {
+            foreach (List<string> l in llMacedonian)
+                if (l.Contains(needle)) return true;
+            return false;
+        }
+
+        public bool findSynonym(string needle)
+        {
+            foreach (List<string> l in llSynonyms)
+                if (l.Contains(needle)) return true;
+            return false;
+        }
+
         public string getRandomTranslation(TextBlock tb, bool[] answerTypes)
         {
             List<string> subL;
@@ -96,6 +110,13 @@ namespace VocabularyGame
             return "";
         }
 
+        private string[] getCellStrings(string col)
+        {
+            string str = _excel.getString(col + _row);
+            if (String.IsNullOrEmpty(str)) return new string[0];
+            return str.Split(';');
+        }
+
         private void fillLL(string col, ref List<List<string>> ll)
         {
             string[] subSubL, subL = getCellStrings(col);
@@ -107,13 +128,6 @@ namespace VocabularyGame
                 foreach (string word in subSubL)
                     ll.Last().Add(word.Trim());
             }
-        }
-
-        private string[] getCellStrings(string col)
-        {
-            string str = _excel.getString(col + _row);
-            if (String.IsNullOrEmpty(str)) return new string[0];
-            return str.Split(';');
         }
     }
 

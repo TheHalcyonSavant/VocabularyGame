@@ -598,12 +598,13 @@ namespace VocabularyGame
         private void askQuestion()
         {
             int answerType = -1;
+            string str;
             List<int> lIdxs = Enumerable.Range(0, _odict.Count).ToList();
             RadioButton rb;
             Random rnd = new Random();
             StringBuilder sbHash = new StringBuilder();
             TextBlock tb;
-            Translation trans;
+            Translation correctTrans = null, wrongTrans;
 
             _correct.answer = null;
             _correct.correctRbIdx = rnd.Next(5);
@@ -615,38 +616,30 @@ namespace VocabularyGame
                 if (_odict.Contains(_correct.keyEnglish))
                 {
                     _correct.answer = _odictWrongs[0] as string;
-                    trans = _odict[_correct.keyEnglish] as Translation;
+                    correctTrans = _odict[_correct.keyEnglish] as Translation;
                     rb = spRbs.Children[_correct.correctRbIdx] as RadioButton;
                     tb = rb.Content as TextBlock;
                     tb.ClearValue(TextBlock.FontStyleProperty);
                     tb.ClearValue(TextBlock.FontWeightProperty);
-                    if (trans.llLexicon.Contains(_correct.answer))
+
+                    if (correctTrans.llLexicon.Contains(_correct.answer))
                     {
                         tb.FontStyle = FontStyles.Italic;
                         answerType = 0;
                     }
-                    else
+                    else if (correctTrans.findSynonym(_correct.answer))
                     {
-                        foreach (List<string> l in trans.llSynonyms)
-                            if (l.Contains(_correct.answer))
-                            {
-                                answerType = 1;
-                                tb.FontWeight = FontWeights.Bold;
-                                break;
-                            }
-                        if (answerType == -1)
-                            foreach (List<string> l in trans.llMacedonian)
-                                if (l.Contains(_correct.answer))
-                                {
-                                    answerType = 2;
-                                    break;
-                                }
+                        answerType = 1;
+                        tb.FontWeight = FontWeights.Bold;
                     }
+                    else if (correctTrans.findMacedonian(_correct.answer))
+                        answerType = 2;
+
                     if (answerType > -1)
                     {
-                        lblQuestion.Content = trans.keyEnglish;
-                        lIdxs.Remove(trans.oIdx);
-                        _correct.correctODictIdx = trans.oIdx;
+                        lblQuestion.Content = correctTrans.keyEnglish;
+                        lIdxs.Remove(correctTrans.oIdx);
+                        _correct.correctODictIdx = correctTrans.oIdx;
                         tb.Text = _correct.answer;
                     }
                     else
@@ -665,14 +658,14 @@ namespace VocabularyGame
                 while (qUniqueIdxs.Count > 0)
                 {
                     _correct.correctODictIdx = qUniqueIdxs.Dequeue();
-                    trans = _odict[_correct.correctODictIdx] as Translation;
-                    lblQuestion.Content = trans.keyEnglish;
+                    correctTrans = _odict[_correct.correctODictIdx] as Translation;
+                    lblQuestion.Content = correctTrans.keyEnglish;
                     rb = spRbs.Children[_correct.correctRbIdx] as RadioButton;
                     tb = rb.Content as TextBlock;
-                    _correct.answer = trans.getRandomTranslation(tb, _answerTypes);
+                    _correct.answer = correctTrans.getRandomTranslation(tb, _answerTypes);
                     if (_correct.answer != "")
                     {
-                        _correct.keyEnglish = trans.keyEnglish;
+                        _correct.keyEnglish = correctTrans.keyEnglish;
                         if (!_dictRepeats.ContainsKey(_correct.repeatsKey) || _dictRepeats[_correct.repeatsKey] < _repeatingLimit)
                             break;
                     }
@@ -700,8 +693,10 @@ namespace VocabularyGame
                     }
                     while (qUniqueIdxs.Count > 0)
                     {
-                        trans = _odict[qUniqueIdxs.Dequeue()] as Translation;
-                        if (trans.getRandomTranslation(tb, _answerTypes) != "") break;
+                        wrongTrans = _odict[qUniqueIdxs.Dequeue()] as Translation;
+                        if (correctTrans.findSynonym(wrongTrans.keyEnglish)) continue;
+                        str = wrongTrans.getRandomTranslation(tb, _answerTypes);
+                        if (!correctTrans.findMacedonian(str) && str != "") break;
                     }
                 }
             }
