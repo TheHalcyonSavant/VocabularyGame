@@ -31,6 +31,7 @@ namespace VocabularyGame
         private bool _isInitialized = false;
         private bool _isInternetOk;
         private bool _isReadingWrongs = false;
+        private bool _isToolTipRevealed = false;
         private bool[] _answerTypes = new bool[3];
         private int _iPlayWords;
         private int _missedODictIdx = 0;
@@ -247,7 +248,15 @@ namespace VocabularyGame
                 Dispatcher.Invoke(new Action(() =>
                 {
                     _timerAfterChoice.Stop();
-                    if (lblCorrect.Visibility == Visibility.Visible) points += 5;
+                    if (lblCorrect.Visibility == Visibility.Visible)
+                    {
+                        if (_isToolTipRevealed)
+                        {
+                            points -= 5;
+                            if (points < 0) points = 0;
+                        }
+                        else points += 5;
+                    }
                     else if (lblWrong.Tag.ToString() == "timeout")
                     {
                         points -= 15;
@@ -334,12 +343,14 @@ namespace VocabularyGame
                 rb.Width = spRbs.ActualWidth;
                 rb.Margin = rbMargin;
                 rb.Click += rb_Click;
+                rb.MouseRightButtonUp += rb_MouseRightButtonUp;
+                rb.Tag = i;
                 if (isWin8OrAbove) rb.VerticalContentAlignment = VerticalAlignment.Center;
 
                 TextBlock tb = new TextBlock();
                 tb.FontSize = 16;
-                tb.Tag = i;
                 tb.TextWrapping = TextWrapping.Wrap;
+                tb.ToolTip = new ToolTip { Visibility = Visibility.Hidden };
 
                 rb.Content = tb;
                 spRbs.Children.Add(rb);
@@ -532,27 +543,24 @@ namespace VocabularyGame
 
         private void rb_Click(object sender, RoutedEventArgs e)
         {
-            int tag = (int)((sender as RadioButton).Content as TextBlock).Tag;
-
-            if (tag == _correct.correctRbIdx)
+            if ((int)(sender as RadioButton).Tag == _correct.correctRbIdx)
             {
                 lblCorrect.Content = t("lblCorrect");
                 if (_wRecords.ocRecordsList.Count > 0)
                 {
-                    int diffToRecord = _wRecords.ocRecordsList.First().Score - points + 5;
+                    int tempPoints = points;
+                    if (_isToolTipRevealed)
+                    {
+                        tempPoints -= 5;
+                        if (tempPoints < 0) tempPoints = 0;
+                    }
+                    int diffToRecord = _wRecords.ocRecordsList.First().Score - tempPoints + 5;
                     if (diffToRecord > 0 && diffToRecord <= 15)
                         lblCorrect.Content = String.Format(t("lblCorrectBeforeRecord"), diffToRecord);
                 }
                 lblWrong.Visibility = Visibility.Collapsed;
                 lblCorrect.Visibility = Visibility.Visible;
-
-                if (_dictRepeats.ContainsKey(_correct.repeatsKey))
-                {
-                    _dictRepeats[_correct.repeatsKey]++;
-                    if (_dictRepeats[_correct.repeatsKey] > 100) _dictRepeats[_correct.repeatsKey] = 100;
-                }
-                else _dictRepeats[_correct.repeatsKey] = 1;
-
+                changeRepeats(1);
                 _odictWrongs.Remove(_correct.keyEnglish);
                 if (_odictWrongs.Count == 0) _isReadingWrongs = false;
             }
@@ -570,23 +578,44 @@ namespace VocabularyGame
                 TextBlock tb = (spRbs.Children[_correct.correctRbIdx] as RadioButton).Content as TextBlock;
                 tb.Background = Brushes.LightSkyBlue;
                 tb.Foreground = Brushes.Black;
-
-                if (_dictRepeats.ContainsKey(_correct.repeatsKey))
-                {
-                    _dictRepeats[_correct.repeatsKey]--;
-                    if (_dictRepeats[_correct.repeatsKey] == 0) _dictRepeats.Remove(_correct.repeatsKey);
-                }
-
+                changeRepeats(-1);
                 _missedODictIdx = _correct.correctODictIdx;
-
                 _odictWrongs[_correct.keyEnglish] = _correct.answer;
-
                 saveRecord();
             }
             spRbs.IsEnabled = false;
             if (_timerCountdown.IsEnabled)
                 _timerCountdown.Stop();
             _timerAfterChoice.Start();
+        }
+
+        private void rb_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock tb = (sender as RadioButton).Content as TextBlock;
+            Translation trans = tb.Tag as Translation;
+            ToolTip tt = tb.ToolTip as ToolTip;
+            string ttContent = tt.Content as string;
+            
+            if (tb.FontWeight != FontWeights.Bold || trans.llMacedonian.Count == 0) return;
+
+            if (String.IsNullOrEmpty(ttContent))
+                tt.Content = trans.llMacedonian.First().First();
+            else
+            {
+                List<string> lAllMacedonians = new List<string>();
+                foreach (List<string> l in trans.llMacedonian)
+                    foreach (string s in l)
+                        lAllMacedonians.Add(s);
+                tt.Content = lAllMacedonians[(lAllMacedonians.IndexOf(ttContent) + 1) % (lAllMacedonians.Count - 1)];
+            }
+            tt.HorizontalOffset = 10;
+            tt.Placement = PlacementMode.Right;
+            tt.PlacementTarget = tb;
+            tt.IsOpen = true;
+            tt.Visibility = Visibility.Visible;
+
+            _isToolTipRevealed = true;
+            changeRepeats(-1);
         }
 
         #endregion
@@ -605,9 +634,12 @@ namespace VocabularyGame
             StringBuilder sbHash = new StringBuilder();
             TextBlock tb;
             Translation correctTrans = null, wrongTrans;
+            ToolTip tt;
 
             _correct.answer = null;
             _correct.correctRbIdx = rnd.Next(5);
+            rb = spRbs.Children[_correct.correctRbIdx] as RadioButton;
+            tb = rb.Content as TextBlock;
 
             if (!_isReadingWrongs && _odictWrongs.Count >= _s.WrongsLimit) _isReadingWrongs = true;
             if (_isReadingWrongs && miRepeatWrongs.IsChecked)
@@ -617,8 +649,6 @@ namespace VocabularyGame
                 {
                     _correct.answer = _odictWrongs[0] as string;
                     correctTrans = _odict[_correct.keyEnglish] as Translation;
-                    rb = spRbs.Children[_correct.correctRbIdx] as RadioButton;
-                    tb = rb.Content as TextBlock;
                     tb.ClearValue(TextBlock.FontStyleProperty);
                     tb.ClearValue(TextBlock.FontWeightProperty);
 
@@ -640,14 +670,14 @@ namespace VocabularyGame
                         lblQuestion.Content = correctTrans.keyEnglish;
                         lIdxs.Remove(correctTrans.oIdx);
                         _correct.correctODictIdx = correctTrans.oIdx;
+                        tb.Tag = correctTrans;
                         tb.Text = _correct.answer;
                     }
                     else
                     {
                         _odictWrongs.Remove(_correct.keyEnglish);
-                        tb.ClearValue(TextBlock.FontStyleProperty);
-                        tb.ClearValue(TextBlock.FontWeightProperty);
                         _correct.answer = null;
+                        tb.Tag = null;
                     }
                 }
             }
@@ -660,8 +690,6 @@ namespace VocabularyGame
                     _correct.correctODictIdx = qUniqueIdxs.Dequeue();
                     correctTrans = _odict[_correct.correctODictIdx] as Translation;
                     lblQuestion.Content = correctTrans.keyEnglish;
-                    rb = spRbs.Children[_correct.correctRbIdx] as RadioButton;
-                    tb = rb.Content as TextBlock;
                     _correct.answer = correctTrans.getRandomTranslation(tb, _answerTypes);
                     if (_correct.answer != "")
                     {
@@ -684,6 +712,10 @@ namespace VocabularyGame
                 tb = rb.Content as TextBlock;
                 tb.ClearValue(TextBlock.BackgroundProperty);
                 tb.ClearValue(TextBlock.ForegroundProperty);
+                tt = tb.ToolTip as ToolTip;
+                tt.Content = "";
+                tt.IsOpen = false;
+                tt.Visibility = Visibility.Hidden;
                 if (i != _correct.correctRbIdx)
                 {
                     if (qUniqueIdxs.Count < 5 - i)
@@ -701,6 +733,7 @@ namespace VocabularyGame
                 }
             }
 
+            _isToolTipRevealed = false;
             if (!_bgWorker.IsBusy)
                 _bgWorker.RunWorkerAsync(Regex.Replace(lblQuestion.Content as string, @" \(\w+\)", ""));
             lblCorrect.Visibility = Visibility.Hidden;
@@ -712,6 +745,17 @@ namespace VocabularyGame
                 _timerCountdown.Start();
             }
             spRbs.IsEnabled = true;
+        }
+
+        private void changeRepeats(int direction)
+        {
+            if (_dictRepeats.ContainsKey(_correct.repeatsKey))
+            {
+                _dictRepeats[_correct.repeatsKey] += (byte)direction;
+                if (_dictRepeats[_correct.repeatsKey] > 100) _dictRepeats[_correct.repeatsKey] = 100;
+                else if (_dictRepeats[_correct.repeatsKey] == 0) _dictRepeats.Remove(_correct.repeatsKey);
+            }
+            else if (direction == 1) _dictRepeats[_correct.repeatsKey] = 1;
         }
 
         private void chooseWrong(string reason)

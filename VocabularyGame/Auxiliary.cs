@@ -81,24 +81,25 @@ namespace VocabularyGame
         {
             List<string> subL;
             Random rnd = new Random();
+            int[] options = Enumerable.Range(0, 3).OrderBy(x => rnd.Next()).ToArray();
 
             tb.ClearValue(TextBlock.FontStyleProperty);
             tb.ClearValue(TextBlock.FontWeightProperty);
-            int[] options = Enumerable.Range(0, 3).OrderBy(x => rnd.Next()).ToArray();
+            tb.Tag = this;
             for (int i = 0; i < options.Length; i++)
             {
                 switch (options[i])
                 {
                     case 0:
                         if (!answerTypes[0] || llLexicon.Count == 0) continue;
-                        tb.Text = llLexicon[rnd.Next(llLexicon.Count)];
                         tb.FontStyle = FontStyles.Italic;
+                        tb.Text = llLexicon[rnd.Next(llLexicon.Count)];
                         return tb.Text;
                     case 1:
                         if (!answerTypes[1] || llSynonyms.Count == 0) continue;
                         subL = llSynonyms[rnd.Next(llSynonyms.Count)];
-                        tb.Text = subL[rnd.Next(subL.Count)];
                         tb.FontWeight = FontWeights.Bold;
+                        tb.Text = subL[rnd.Next(subL.Count)];
                         return tb.Text;
                     case 2:
                         if (!answerTypes[2] || llMacedonian.Count == 0) continue;
