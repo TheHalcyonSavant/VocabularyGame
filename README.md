@@ -16,6 +16,8 @@ When you click the sound icon (next to the question) you can hear and learn how 
  
 When you gain **30 points** for the first time, then you've made the first record. To break it again you must pass the best record made so far. To see all records go to *File -> Records*. The records are stored inside *dat/{dictionaryWithNoExt}_records.dat* file (e.g. *dat/dictionary_records.dat*) and saved upon leaving the application.
 
+Right clicking the synonyms (the **bold** radio buttons) will bring up a *tooltip* with the corresponding Macedonian translation, if there is one. Every next right clicking on the same choice will cycle through the translations. Be careful right clicking the synonyms, after guessing the right answer you will loose **-5 points** instead of gaining.
+
 ##dictionary.xlsm
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you open the application for the first, an open dialog pops out and asks you to locate *dictionary.xlsm*. This is a Macro-Enabled Excel file that contains all the unique entries, important for this game to choose from. You must have installed **Microsoft Office 2007** or newer version to edit this file.  
 This excel file contains 4 columns:  
