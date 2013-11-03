@@ -761,7 +761,7 @@ namespace VocabularyGame
         private void chooseWrong(string reason)
         {
             rb_Click(
-                spRbs.Children.OfType<RadioButton>().First(x => (int)(x.Content as TextBlock).Tag != _correct.correctRbIdx),
+                spRbs.Children.OfType<RadioButton>().First(x => (int)x.Tag != _correct.correctRbIdx),
                 new RoutedEventArgs(null, reason)
             );
         }
