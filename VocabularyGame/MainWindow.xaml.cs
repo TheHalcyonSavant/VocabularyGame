@@ -602,11 +602,11 @@ namespace VocabularyGame
                 tt.Content = trans.llMacedonian.First().First();
             else
             {
-                List<string> lAllMacedonians = new List<string>();
+                List<string> lAll = new List<string>();
                 foreach (List<string> l in trans.llMacedonian)
                     foreach (string s in l)
-                        lAllMacedonians.Add(s);
-                tt.Content = lAllMacedonians[(lAllMacedonians.IndexOf(ttContent) + 1) % (lAllMacedonians.Count - 1)];
+                        lAll.Add(s);
+                tt.Content = lAll[lAll.Count == 1 ? 0 : lAll.IndexOf(ttContent) + 1 % (lAll.Count - 1)];
             }
             tt.HorizontalOffset = 10;
             tt.Placement = PlacementMode.Right;
