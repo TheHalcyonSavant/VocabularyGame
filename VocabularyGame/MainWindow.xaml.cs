@@ -595,9 +595,8 @@ namespace VocabularyGame
             Translation trans = tb.Tag as Translation;
             ToolTip tt = tb.ToolTip as ToolTip;
             string ttContent = tt.Content as string;
-            
-            if (tb.FontWeight != FontWeights.Bold || trans.llMacedonian.Count == 0) return;
 
+            if (tb.FontWeight != FontWeights.Bold || trans.llMacedonian.Count == 0) return;
             if (String.IsNullOrEmpty(ttContent))
                 tt.Content = trans.llMacedonian.First().First();
             else
@@ -606,7 +605,7 @@ namespace VocabularyGame
                 foreach (List<string> l in trans.llMacedonian)
                     foreach (string s in l)
                         lAll.Add(s);
-                tt.Content = lAll[lAll.Count == 1 ? 0 : lAll.IndexOf(ttContent) + 1 % (lAll.Count - 1)];
+                tt.Content = lAll[lAll.Count == 1 ? 0 : (lAll.IndexOf(ttContent) + 1) % lAll.Count];
             }
             tt.HorizontalOffset = 10;
             tt.Placement = PlacementMode.Right;
