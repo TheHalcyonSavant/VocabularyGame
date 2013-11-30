@@ -350,7 +350,7 @@ namespace VocabularyGame
                 TextBlock tb = new TextBlock();
                 tb.FontSize = 16;
                 tb.TextWrapping = TextWrapping.Wrap;
-                tb.ToolTip = new ToolTip { Visibility = Visibility.Hidden };
+                tb.ToolTip = new ToolTip { FontSize = 15, Visibility = Visibility.Hidden };
 
                 rb.Content = tb;
                 spRbs.Children.Add(rb);
