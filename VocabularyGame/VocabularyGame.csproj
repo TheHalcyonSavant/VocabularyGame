@@ -38,7 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>images\Book.ico</ApplicationIcon>
+    <ApplicationIcon>images\Book32.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExcelApp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -133,7 +133,10 @@
     <Folder Include="sounds\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\Book.ico" />
+    <Resource Include="Book32.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Book32.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
