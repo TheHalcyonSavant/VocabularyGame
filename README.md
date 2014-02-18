@@ -1,5 +1,7 @@
 VocabularyGame - Better your elocution
 -----------------------------------------------------
+*[Testing is the best learning tool](http://www.sciencedaily.com/releases/2012/10/121005123902.htm)*
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a very simple test game that accumulates points based on your correctly guessed choices. The question is on the top of the window and you must choose only one from five random choices to proceed to the next question.  
 Testing is the best approach to gain any knowledge and with this game it can't be easier.
 
