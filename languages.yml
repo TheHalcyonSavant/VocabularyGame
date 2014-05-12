@@ -1,0 +1,4 @@
+C#:
+  frameworks:
+    - WPF - Windows Presentaion Foundation
+    - LINQ
